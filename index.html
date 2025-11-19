@@ -619,7 +619,7 @@ textarea:focus, input:focus, select:focus {
   max-width: 900px;
   margin: 0 auto;
   height: 100vh;
-  padding-bottom: 250px;
+  padding-bottom: 20px;
 }
 
 #gameFooterFixed {
@@ -636,6 +636,11 @@ textarea:focus, input:focus, select:focus {
     flex-direction: column;
     align-items: center;
     gap: 12px;
+}
+
+#gameFooterFixed > .game-result {
+    width: auto; /* Annule le width: 100% de la règle précédente */
+    /* Le centrage est déjà géré par 'align-items: center' du footer */
 }
 
 #gameFooterFixed > * {
@@ -707,6 +712,7 @@ textarea:focus, input:focus, select:focus {
   min-height: 150px;
   flex: 1;
   overflow-y: auto;
+  padding-bottom: 150px;
 }
 
 .game-section {
@@ -727,7 +733,8 @@ textarea:focus, input:focus, select:focus {
 #reorder-drag-mode {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 40px;
+	flex: 1;
 }
 .words-zone {
   min-height: 100px;
@@ -762,11 +769,13 @@ textarea:focus, input:focus, select:focus {
 }
 
 #availableWords .word-token {
-  font-size: 18px; /* Réduction de 25% (24px * 0.75) */
+  font-size: 19px;
+  padding: 5px 13px;
 }
 
 #userSentence .word-token {
-  font-size: 20px; /* Réduction de 15% (24px * 0.85 ≈ 20px) */
+  font-size: 21px;
+  padding: 7px 15px;
 }
 
 .word-token:hover {
@@ -809,10 +818,10 @@ textarea:focus, input:focus, select:focus {
 /* -- Mode: Saisie Libre -- */
 .free-textarea {
   width: 100%;
-  min-height: 120px;
+  min-height: 80px;
   padding: 16px;
   font-family: 'Noto Sans SC', sans-serif;
-  font-size: 20px;
+  font-size: 25px;
   background: var(--panel);
   color: var(--fg);
   border: 2px solid var(--border);
@@ -828,7 +837,7 @@ textarea:focus, input:focus, select:focus {
 
 /* -- Mode: Frappe Live & Time Attack -- */
 #live-typing-mode, #time-attack-mode {
-  display: flex;
+  display: block;
   flex-direction: column;
   gap: 16px;
 }
@@ -866,7 +875,7 @@ textarea:focus, input:focus, select:focus {
   width: 100%;
   padding: 16px;
   font-family: 'Noto Sans SC', sans-serif;
-  font-size: 20px;
+  font-size: 25px;
   background: var(--panel);
   color: var(--fg);
   border: 2px solid var(--border);
@@ -957,7 +966,7 @@ textarea:focus, input:focus, select:focus {
   width: 100%;
   padding: 16px;
   font-family: 'Noto Sans SC', sans-serif;
-  font-size: 20px;
+  font-size: 25px;
   background: var(--panel);
   color: var(--fg);
   border: 2px solid var(--border);
@@ -1009,31 +1018,35 @@ textarea:focus, input:focus, select:focus {
 .game-result {
   display: none;
   padding: 16px 24px;
-  border-radius: 12px;
+  border-radius: 0;
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  animation: slideDown 0.3s ease-out;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 13px
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index: 10001; 
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  margin: 0;
+  transform: translateY(-100%); 
+  transition: transform 0.3s ease-out;
 }
 
 .game-result.success {
-  background: rgba(34, 197, 94, 0.2);
-  color: #16a34a;
-  border: 2px solid rgba(34, 197, 94, 0.4);
+  background: #22c55e; 
+  color: #ffffff; /* Texte blanc pour le contraste */
+  border: none;
+  display: block;
+  transform: translateY(0);
 }
 
 .game-result.error {
-  background: rgba(239, 68, 68, 0.2);
-  color: #dc2626;
-  border: 2px solid rgba(239, 68, 68, 0.4);
+  background: #ef4444; 
+  color: #ffffff; /* Texte blanc pour le contraste */
+  border: none;
+  display: block;
+  transform: translateY(0);
 }
 
 .game-actions {
@@ -1269,6 +1282,29 @@ textarea:focus, input:focus, select:focus {
   animation: shake 0.3s ease-in-out;
   border-color: var(--incorrect) !important;
   background: rgba(239, 68, 68, 0.2); /* Fond rouge léger */
+}
+
+/* ================================================= */
+/* =========== STICKY DROP ZONE (AJOUT) ============ */
+/* ================================================= */
+#reorder-drop-section {
+  position: sticky;
+  top: 0; 
+  z-index: 100; 
+  background: var(--bg); 
+  padding-top: 10px;
+  padding-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 14px 14px;
+  padding-top: 2px;
+  flex-shrink: 0; /* Ne se compresse pas */
+}
+
+
+/* Ajustement pour que le titre "Votre phrase" ne soit pas collé en haut */
+#reorder-drop-section .game-section-title {
+  padding-top: 0px; 
 }
 
 /* ================================================= */
@@ -1629,11 +1665,13 @@ textarea:focus, input:focus, select:focus {
   line-height: 2.2;
   flex: 1;
   min-width: 0;
-  padding: 30px;
+  padding: 16px;
   background: var(--card);
   border-radius: 16px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  text-align: justify; 
+  text-justify: inter-character; 
 }
 
 .read-translation {
@@ -1641,14 +1679,16 @@ textarea:focus, input:focus, select:focus {
   line-height: 1.8;
   flex: 1;
   min-width: 0;
-  padding: 30px;
+  padding: 16px; 
   background: var(--panel);
   border-radius: 16px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   color: var(--muted);
   font-style: italic;
-  font-size: 0.9em; /* Légèrement plus petit */
+  font-size: 0.9em; 
+  text-align: justify; 
+  hyphens: auto; 
 }
 
 
@@ -1735,7 +1775,7 @@ position: absolute;
 .read-flip-btn {
   display: none; /* Hidden by default, shown via JS/media query */
   position: fixed;
-  bottom: 80px;
+  bottom: 24px;
   right: 24px;
   width: 56px;
   height: 56px;
@@ -1783,7 +1823,7 @@ position: absolute;
        order: 11; /* Mettre le bouton focus après les filtres */
        margin-top: 8px; /* Ajouter un espace si ça passe à la ligne */
    }
-}
+
 .read-flip-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 25px rgba(122, 162, 255, 0.5);
@@ -2008,6 +2048,64 @@ position: absolute;
   margin-bottom: 24px;
   font-weight: 600;
 }
+
+/* ================================================= */
+/* =========== STYLES ONGLETS DICT (AJOUT) ========= */
+/* ================================================= */
+
+/* Conteneur pour les boutons Pinyin */
+.dict-tabs-container {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 8px;
+  margin-bottom: 16px;
+  /* S'assure qu'il y a de l'espace après les tags HSK/Freq */
+  margin-top: 20px; 
+}
+
+/* Style pour un bouton Pinyin (onglet) */
+.dict-tab-btn {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  /* Utilise la police Inter standard pour les pinyins sans tons étranges */
+  font-family: 'Inter', sans-serif; 
+  background: var(--card);
+  border: 2px solid var(--border);
+  color: var(--muted); /* Couleur neutre par défaut */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dict-tab-btn:hover {
+  border-color: var(--accent); /* Devient bleu au survol */
+  color: var(--accent);
+}
+
+/* Style de l'onglet actif (Neutre) */
+.dict-tab-btn.active {
+  background: var(--border); /* Fond neutre (plus foncé) */
+  border-color: var(--border);
+  color: var(--fg); /* Texte principal (blanc/noir) */
+}
+
+/* Conteneur pour les panneaux de définition */
+.dict-panes-container {
+  position: relative;
+}
+
+/* Panneau de définition (caché par défaut) */
+.dict-pane {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Panneau actif (visible) */
+.dict-pane.active {
+  display: block;
+}
+
 
 /* --- INSERT TAG STYLES HERE --- */
 .dict-tags-container {
@@ -2335,6 +2433,50 @@ position: absolute;
         gap: 8px; /* Espacement réduit */
     }
 
+/* 1. Inverser l'ordre visuel (Mots en haut, Phrase en bas) */
+#reorder-drag-mode {
+  flex-direction: column-reverse;
+}
+
+/* 2. Annuler les styles 'sticky' de la zone de phrase */
+#reorder-drop-section {
+  position: relative; /* Annule sticky */
+  z-index: auto;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  border-bottom: none;
+  border-radius: 0;
+  margin-top: 0;
+  flex-shrink: 1; /* Rétablit la normale */
+}
+
+#reorder-drop-section .game-section-title {
+  padding-top: 0;
+}
+
+/* 3. Annuler l'expansion de la zone des mots disponibles */
+#reorder-available-section {
+  flex: none; /* Annule flex: 1 */
+  overflow: visible; /* Annule hidden */
+  margin-bottom: 20px; /* Rétablit la marge V21 */
+}
+
+/* 4. Annuler le scroll interne de la zone de mots */
+#availableWords {
+  flex: none; /* Annule flex: 1 */
+  overflow-y: visible; /* Annule auto */
+  align-items: center; /* Centre les mots (Style V21) */
+  align-content: center; /* Centre les mots (Style V21) */
+}
+
+
+/* Cacher les barres de scroll (si elles étaient définies) */
+#availableWords::-webkit-scrollbar {
+  display: none;
+}
+
+
     /* === PRÉSERVATION LAYOUT TABLETTE === */
     .read-controls-inner,
     .read-panel {
@@ -2398,6 +2540,7 @@ position: absolute;
          order: 12; margin-left: 8px; margin-top: 8px; align-items: center;
      }
      .read-filter-legend span { display: inline; } /* Afficher "FILTRES:" */
+
 }
 
 /* Mobile (Activation du Swiper) - Styles pour max-width: 900px */
@@ -2418,22 +2561,18 @@ position: absolute;
     display: none !important; /* Force le masquage */
   }
 
-  #time-attack-mode .game-section {
-    display: flex;         /* Activer Flexbox */
-    flex-direction: column; /* Empiler verticalement */
+ 
+  .typing-target-text
+   {
+    font-size: 28px;
   }
-
-  #time-attack-mode #time-attack-translation {
-    order: 1; /* Mettre la traduction en premier visuellement */
+  
+  .blanks-display-text {
+    font-size: 32px;
   }
-
-  #time-attack-mode #time-attack-target-text {
-    order: 2; /* Mettre le texte chinois en deuxième */
-  }
-
-  #time-attack-mode #time-attack-input {
-    order: 3; /* Mettre le champ de saisie en dernier */
-    margin-top: 16px; /* Rétablir un peu d'espace au-dessus si besoin */
+  
+  .translation-hint { 
+    font-size: 16px !important;
   }
 
   #hideControlsBtn {
@@ -2459,7 +2598,127 @@ position: absolute;
     top: auto;
     z-index: 10; /* passe au-dessus des dots si besoin */
   }
-}
+  
+  /* === CORRECTION BANDEAU RÉSULTAT MOBILE === */
+  
+  .game-result {
+    /* 1. Annule la position fixe */
+    position: relative; 
+    
+    /* 2. Annule les styles de positionnement */
+    top: auto;
+    left: auto;
+    /* La transformation est gérée ci-dessous */
+
+    /* 3. Largeur automatique */
+    width: auto; 
+    
+    /* 4. Marge supérieure */
+    margin-top: 10px;
+    
+    /* 5. Bords arrondis */
+    border-radius: 14px;
+    
+    /* 6. CORRECTION ERREUR SYNTAXE (10x -> 12px) */
+    margin-bottom: 12px;
+    
+    /* 7. Assure l'affichage */
+    display: block; 
+  }
+  
+  /* Règle plus spécifique pour 'SUCCESS' */
+  #gamePage .game-result.success {
+    /* Couleur verte avec 90% d'opacité */
+    background: #22c55ee6;
+    
+    /* (Optionnel) Effet verre dépoli pour un look moderne */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+
+  /* Règle plus spécifique pour 'ERROR' */
+  #gamePage .game-result.error {
+    /* Couleur rouge avec 90% d'opacité */
+    background: #ef4444e6; 
+    
+    /* (Optionnel) Effet verre dépoli pour un look moderne */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+  
+  /* RÈGLE FUSIONNÉE POUR 'SUCCESS' */
+  .game-result.success {
+    /* Annule la transformation (venait de la règle supprimée) */
+    transform: none !important;
+    
+    /* Couleur verte avec 90% d'opacité */
+    background: #22c55ee6;
+    
+    /* (Optionnel) Effet verre dépoli */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+
+  /* RÈGLE FUSIONNÉE POUR 'ERROR' */
+  .game-result.error {
+    /* Annule la transformation (venait de la règle supprimée) */
+    transform: none !important;
+    
+    /* Couleur rouge avec 90% d'opacité */
+    background: #ef4444e6; 
+    
+    /* (Optionnel) Effet verre dépoli */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+  
+  /* ======================================================== */
+  /* == MODIFICATION : Hauteur adaptative Réorganiser (Mobile) == */
+  /* ======================================================== */
+  
+  /* Le conteneur principal du mode réorganiser */
+  #reorder-drag-mode {
+    flex: 0 1 auto; /* S'adapte au contenu au lieu de forcer l'expansion */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Réduit l'espace entre les sections sur mobile */
+    overflow: visible;
+  }
+  
+  /* Cible la section "Mots disponibles" UNIQUEMENT sur mobile */
+  #reorder-available-section {
+    flex: 0 1 auto; /* Permet l'adaptation au contenu au lieu de forcer l'expansion */
+    overflow: visible; /* Permet à la section de montrer son contenu naturellement */
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #availableWords {
+    /* on laisse le JS fixer max-height dynamiquement -> pas de max-height ici */
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain; /* évite le scroll d'arrière-plan */
+    touch-action: pan-y;          /* balayage vertical autorisé depuis l'espace vide */
+    -webkit-overflow-scrolling: touch; /* inertie iOS/Android */
+  }
+  
+    #availableWords::before {
+    content: "";
+    display: block;
+    height: 6px;   /* petit espace fixe tout en haut */
+    flex: 0 0 auto;
+	}
+  
+  #reorder-drag-mode { 
+    overflow: visible; 
+	align-items: center;
+    align-content: center; 
+    justify-content: center; 
+	padding-left: 12px
+    padding-right: 12px
+  }
+  
 
   /* Contenu quand caché */
    .read-page.active .read-content { top: 100px; /* Espace initial */ }
@@ -2569,31 +2828,46 @@ position: absolute;
   /* Autres styles mobile (contenu, flip, super zen) (INCHANGÉS) */
   .read-content { padding: 20px; }
   .read-text-container.has-flip { flex-direction: column; gap: 0; }
-  .flip-front, .flip-back { padding: 20px}
+  .flip-front, .flip-back { padding: 12px}
   .flip-container {
   min-height: 1px; /* Au moins 1px pour le contexte */
 }
   .read-text-container:not(.has-flip) { flex-direction: column; }
   .read-text-container:not(.has-flip) .read-text,
-  .read-text-container:not(.has-flip) .read-translation { flex: none; width: 100%; padding: 20px; min-height: 300px; }
-  .read-page.super-zen .read-content { padding: 60px 20px 100px; bottom: 80px; }
+  .read-text-container:not(.has-flip) .read-translation { flex: none; width: 100%; padding: 12px; min-height: 300px; }
+  .read-page.super-zen .read-content { padding: 30px 20px 50px 20px; bottom: 80px}
   .read-page.super-zen .read-text { font-size: 36px; }
   .read-page.super-zen .read-translation { font-size: 18px; }
   .super-zen-controls { padding: 12px 8px; gap: 8px; height: 80px;}
   .super-zen-btn { padding: 8px 12px; font-size: 12px; }
   .super-zen-play { width: 44px; height: 44px; }
-  
   .read-text-container.has-flip .flip-front,
   .read-text-container.has-flip .flip-back {
       display: block !important;
   }
-}
+  
+  }
 
 /* Très petits écrans */
 @media (max-width: 600px) {
     /* Styles Accueil et Jeu (INCHANGÉS) */
     .container { padding: 16px; padding-bottom: 100px; }
-    /* ... (toutes les autres règles inchangées) ... */
+
+.typing-target-text.shrink-text {
+      font-size: 28px !important;
+    }
+
+
+.blanks-display-text.shrink-text {
+      font-size: 32px !important;
+    }
+	
+	.translation-hint.shrink-text { 
+    font-size: 16px !important;
+  }
+
+    .shrink-text { font-size: 18px !important; line-height: 1.6 !important; }
+
     .shrink-text { font-size: 18px !important; line-height: 1.6 !important; }
 
     /* Styles Mode Lecture Mobile */
@@ -2799,6 +3073,33 @@ position: absolute;
 
   /* 9. Cacher le bouton Flip */
   .read-flip-btn { display: none !important; }
+  
+  /* ================================================= */
+  /* ===== CENTRAGE BANDEAU VALIDATION (PC) ======== */
+  /* ================================================= */
+
+  .game-result {
+      /* Annuler le positionnement en haut */
+      top: 75%;
+      left: 50%;
+      width: auto; /* Passer de 100% à auto */
+
+      /* Styliser en "modal" */
+      border-radius: 14px;
+
+      /* Nouvelle animation (centrée + fondu) */
+      transform: translate(-50%, -50%) translateY(-30px);
+      opacity: 0;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      pointer-events: none;
+  }
+
+  .game-result.success,
+  .game-result.error {
+      /* Nouvel état "affiché" pour l'animation */
+      transform: translate(-50%, -50%) translateY(0);
+      opacity: 1;
+  }
 
 }
 
@@ -2816,19 +3117,21 @@ position: absolute;
   min-width: 0 !important;
   flex: none !important;
   text-align: center !important;
+  height: auto !important;
+  min-height: auto !important;
 }
 
 /* Taille et line-height spécifiques Super Zen */
 .read-page.super-zen .read-text,
 .read-page.super-zen .flip-front.read-text {
-  font-size: 48px !important;
+  font-size: 36px;
   line-height: 1.5 !important;
   font-family: 'Noto Sans SC', sans-serif !important;
 }
 
 .read-page.super-zen .read-translation,
 .read-page.super-zen .flip-back.read-translation {
-  font-size: 24px !important;
+  font-size: 18px;
   line-height: 1.6 !important;
   font-style: italic !important;
   color: var(--muted) !important;
@@ -2844,7 +3147,7 @@ position: absolute;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 20px !important;
+  gap: 8px !important;
   max-width: 90% !important;
   margin: 0 auto !important;
 }
@@ -2854,7 +3157,125 @@ position: absolute;
   background: transparent !important;
   box-shadow: none !important;
   border: none !important;
+  
 }
+
+
+/* ================================================= */
+/* == CORRECTION ESPACEMENT SUPER ZEN (V2 - Bon Sélecteur) == */
+/* ================================================= */
+
+/*
+  * EXPLICATION :
+  * Le JS applique 'visibility: hidden'. Ce CSS le transforme en 'display: none'
+  * UNIQUEMENT en mode Super Zen, en ciblant la classe '.read-char'.
+*/
+
+/* 1. Par défaut, en Super Zen, les spans sont 'inline' */
+.read-page.super-zen .read-char {
+    display: inline;
+}
+
+/* 2. SI le JS cache un span (style="visibility: hidden;")... */
+.read-page.super-zen .read-char[style*="visibility: hidden"] {
+    /* ... ALORS on le force à 'display: none' pour qu'il ne prenne pas de place */
+    display: none !important;
+}
+
+/* 3. SI le JS affiche un span (style="visibility: visible;")... */
+.read-page.super-zen .read-char[style*="visibility: visible"] {
+     /* ... ALORS on s'assure qu'il est 'inline' */
+    display: inline !important;
+}
+
+/* ================================================= */
+/* ============ CORRECTION TAP MOBILE ============== */
+/* ================================================= */
+
+/* 1. Désactive le "voyant bleu" natif sur les caractères */
+.read-char {
+  -webkit-tap-highlight-color: transparent; /* Désactive le surlignage natif iOS/Android */
+}
+
+/* 2. Définit notre propre classe de surlignage temporaire */
+.char-tapped {
+    background-color: rgba(122, 162, 255, 0.3); /* Utilise la couleur --accent (bleu) en semi-transparent */
+    border-radius: 3px;
+    transition: background-color 0.4s ease; /* Permet un fondu de sortie */
+}
+
+/* ================================================= */
+/* ==== AJUSTEMENT HAUTEUR MODE RÉORGANISER ===== */
+/* ================================================= */
+
+
+/* Cible la section "Mots disponibles" que nous avons identifiée */
+#reorder-available-section {
+display: flex;
+flex-direction: column;
+  margin-bottom: 0; /* Supprime la marge du bas */
+  margin-bottom: 12px; 
+}
+
+/* S'assure que le titre ne rétrécit pas */
+#reorder-available-section > .game-section-title {
+  padding-bottom: 8px;
+}
+
+/* Fait en sorte que la zone des mots elle-même
+   remplisse tout l'espace de sa section */
+#availableWords {
+min-height: 100px;
+  padding: 20px;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  box-sizing: border-box;   /* le padding compte dans la hauteur max */
+  padding-top: 12px;        /* espace en haut pour la 1ère ligne */
+  scroll-padding-top: 10px; /* si tu fais scrollIntoView/focus, ça garde 10px au-dessus */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center; /* Aligne en haut */
+  align-content: center; /* Contenu aligné en haut */
+  justify-content: center;
+  align-items: flex-start; 
+  align-content: flex-start;
+  /* Styles de scrollbar pour webkit (Chrome, Safari) */
+    scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--border);
+}
+
+#availableWords::-webkit-scrollbar {
+  width: 8px;
+}
+
+#availableWords::-webkit-scrollbar-track {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+#availableWords::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+#availableWords::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  filter: brightness(1.2);
+}
+
+.game-result .result-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px; /* Ajustement fin pour l'alignement vertical */
+}
+
+
 </style>
 </head>
 <body data-theme="dark">
@@ -2893,14 +3314,23 @@ position: absolute;
 
     <div id="tab1" class="tab-content active">
       <div class="card">
-        <h2 class="section-title">📝 Votre texte</h2>
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Votre texte
+        </h2>
         <div class="input-group">
           <label>Texte chinois</label>
           <textarea id="inputZh" placeholder="Collez votre texte chinois ici...">城市的夜晚，总有一种说不出的寂静。街灯亮着，却照不进每个人的心。刘哲坐在办公室里，盯着电脑屏幕上那份还没完成的报告。窗外的霓虹在闪烁，像是无声地提醒他：又是一个加班的夜晚。他已经记不清上一次和家人吃晚饭是什么时候了。妻子发来的信息停留在手机屏幕上：“别太晚回来。”简单的五个字，却让他心里一阵酸涩。同事们一个个离开，只剩下空调的嗡嗡声和键盘的敲击声。刘哲忽然意识到，自己忙碌了这么多年，好像一直在追赶什么，却从未真正停下来想一想。他关掉电脑，走到窗边，看着远处的高楼。那些灯光看似明亮，其实和他一样，都在深夜里努力坚持着。 “也许生活不该只是工作”他轻声对自己说。那一刻，他决定明天早点回家，陪妻子一起吃一顿热乎的晚饭</textarea>
         </div>
         <div class="input-group">
           <label>Traduction française (optionnelle)</label>
-          <textarea id="inputTr" placeholder="Collez la traduction ici...">La nuit de la ville a toujours une forme de silence difficile à décrire.
+          <textarea id="inputTr" placeholder="Collez la traduction ici...">La nuit de la ville a always une forme de silence difficile à décrire.
 Les lampadaires brillent, mais n’éclairent pas le cœur de chacun.
 Liu Zhe est assis dans son bureau, fixant le rapport inachevé sur l’écran de son ordinateur.
 Les néons dehors clignotent, comme s’ils lui rappelaient en silence : encore une soirée de travail tardive.
@@ -2921,7 +3351,32 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
         <div id="sentencesPreview" class="status-chip clickable"></div> </div>
 
       <div class="card">
-        <h2 class="section-title">📚 Dictionnaires</h2>
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          Thème
+        </h2>
+        <div class="input-group">
+          <label>Thème de couleur</label>
+          <div class="theme-switcher">
+            <button class="theme-btn theme-dark active" data-theme="dark"></button>
+            <button class="theme-btn theme-light" data-theme="light"></button>
+            <button class="theme-btn theme-paper" data-theme="paper"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          Dictionnaires
+        </h2>
         <div class="input-group">
           <label>Dictionnaire CC-CEDICT (.txt ou .u8)</label>
           <input type="file" id="dictFile" accept=".txt,.u8" />
@@ -2936,7 +3391,7 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
     </div>
 
     <div id="tab2" class="tab-content">
-      <div id="gameOptions">
+      <div id="gameOptions" style="display:none;">
         <div class="card">
           <h2 class="section-title">🎮 Options du mode jeu</h2>
           <div class="input-group">
@@ -3016,16 +3471,28 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
           </div>
           
           <div id="fillBlanksOptions" class="card game-mode-option" style="display:none;">
-            <h2 class="section-title">🧩 Options Phrases à trous</h2>
+            <h2 class="section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+              Options Phrases à trous
+            </h2>
             <div class="input-group">
               <label>Niveaux à masquer</label>
               <div class="category-selector" id="gameCategorySelector">
                 <button class="category-btn active" data-category="hsk">
-                  <span class="category-icon">📚</span>
+                  <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                  </svg>
                   <span class="category-label">Niveaux HSK</span>
                 </button>
                 <button class="category-btn" data-category="freq">
-                  <span class="category-icon">📊</span>
+                  <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
                   <span class="category-label">Fréquence</span>
                 </button>
               </div>
@@ -3060,7 +3527,9 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
 			              </div>
 						            </div>
           
-        </div> </div> <div id="readOptions" style="display:none;">
+        </div> </div> 
+		
+		<div id="readOptions">
 		
 		<div class="card">
           <h2 class="section-title">Mode d'affichage</h2>
@@ -3074,18 +3543,32 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
           </div>
         </div>
 		
-        <div class="card">
-          <h2 class="section-title">📖 Options de lecture</h2>
+<div class="card">
+          <h2 class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            Sélection des niveaux
+          </h2>
           
           <div class="input-group">
             <label>Type de catégorie</label>
             <div class="category-selector" id="readCategorySelector">
               <button class="category-btn active" data-category="hsk">
-                <span class="category-icon">📚</span>
+                <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
                 <span class="category-label">Niveaux HSK</span>
               </button>
               <button class="category-btn" data-category="freq">
-                <span class="category-icon">📊</span>
+                <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
                 <span class="category-label">Fréquence</span>
               </button>
             </div>
@@ -3123,7 +3606,17 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
               <option value="type">Révéler caractère par caractère</option>
             </select>
           </div>
+        </div>
 
+       <div class="card">
+          <h2 class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; vertical-align: middle; margin-top: -2px;">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Options de lecture
+          </h2>
+          
           <div class="input-group">
             <label>Taille du texte chinois</label>
             <select id="fontSize">
@@ -3136,22 +3629,26 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
           </div>
 
           <div class="input-group">
+            <label>Hauteur d'interligne</label>
+            <div class="slider-container">
+              <input type="range" id="readInterligne_slider" min="60" max="150" value="100" step="5" class="slider"/>
+              <span id="readInterligneValue" class="slider-value">100%</span>
+            </div>
+          </div>
+          
+          <div class="input-group">
+            <label>Espacement caractères/mots</label>
+            <div class="slider-container">
+              <input type="range" id="readSpacing_slider" min="0" max="10" value="0" step="1" class="slider"/>
+              <span id="readSpacingValue" class="slider-value">0 px</span>
+            </div>
+          </div>
+
+          <div class="input-group">
             <label>Vitesse de révélation</label>
             <div class="slider-container">
               <input type="range" id="cpm" min="30" max="600" value="150" step="10" class="slider"/>
               <span id="cpmValue" class="slider-value">150 car/min</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2 class="section-title">🎨 Thème</h2>
-          <div class="input-group">
-            <label>Thème de couleur</label>
-            <div class="theme-switcher">
-              <button class="theme-btn theme-dark active" data-theme="dark"></button>
-              <button class="theme-btn theme-light" data-theme="light"></button>
-              <button class="theme-btn theme-paper" data-theme="paper"></button>
             </div>
           </div>
         </div>
@@ -3176,19 +3673,21 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
     <div class="game-main-content">
       
       <div id="reorder-drag-mode" class="game-mode-ui" style="display:none;">
-        <div class="game-section">
-          <h3 class="game-section-title">Mots disponibles</h3>
-          <div id="availableWords" class="words-zone"></div>
-        </div>
-        <div class="game-section">
+        
+        <div class="game-section" id="reorder-drop-section">
           <h3 class="game-section-title">Votre phrase</h3>
           <div id="userSentence" class="words-zone drop-zone"></div>
+        </div>
+
+        <div class="game-section" id="reorder-available-section">
+          <h3 class="game-section-title">Mots disponibles</h3>
+          <div id="availableWords" class="words-zone"></div>
         </div>
       </div>
 
       <div id="free-input-mode" class="game-mode-ui" style="display:none">
         <div class="game-section">
-          <div id="free-input-target-text" class="typing-target-text" style="font-size: 24px; color: var(--muted); margin-bottom: 16px;"></div>
+          <div id="free-input-target-text" class="typing-target-text" style="font-size: 24px; margin-bottom: 16px;"></div>
           <h3 class="game-section-title">Tapez la phrase</h3>
           <textarea id="freeInput" class="free-textarea" placeholder="Tapez la phrase ici... (Entrée pour valider)"></textarea>
         </div>
@@ -3202,8 +3701,9 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
 
       <div id="time-attack-mode" class="game-mode-ui" style="display:none">
         <div class="game-section">
-          <div id="time-attack-target-text" class="typing-target-text"></div> <div id="time-attack-translation" class="translation-hint" style="margin-top: 16px;"></div>
-          <input type="text" id="time-attack-input" class="typing-input" aria-hidden="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          <div id="time-attack-translation" class="translation-hint" style="margin-top: 20px;"></div> 
+          <div id="time-attack-target-text" class="typing-target-text"></div> 
+          <input type="text" id="time-attack-input" class="typing-input" ... />
         </div>
       </div>
       
@@ -3318,11 +3818,25 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
           </button>
         </div>
       </div> <div class="read-panel" id="rc-panel-3">
+        
         <div class="read-font-controls">
           <button id="readFontDown" class="read-font-btn">A-</button>
           <span id="readFontSize" class="read-font-size">34px</span>
           <button id="readFontUp" class="read-font-btn">A+</button>
         </div>
+        
+        <div class="read-font-controls" id="readLineHeightControls">
+          <button id="readInterligneDown" class="read-font-btn" title="Réduire interligne">I-</button>
+          <span id="readLineHeight" class="read-font-size">100%</span>
+          <button id="readInterligneUp" class="read-font-btn" title="Augmenter interligne">I+</button>
+        </div>
+        
+        <div class="read-font-controls" id="readSpacingControls">
+          <button id="readSpacingDown" class="read-font-btn" title="Réduire espacement">E-</button>
+          <span id="readSpacing" class="read-font-size">0px</span>
+          <button id="readSpacingUp" class="read-font-btn" title="Augmenter espacement">E+</button>
+        </div>
+
       </div> </div> <div class="read-controls-dots" id="readControlsDots">
       <span class="dot active" data-index="0"></span>
       <span class="dot" data-index="1"></span>
@@ -3363,8 +3877,8 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
       </svg>
       <span>Quitter</span>
     </button>
-
-    <button id="szBtnType" class="super-zen-btn">
+	
+	    <button id="szBtnType" class="super-zen-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="9 11 12 14 22 4"></polyline>
         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
@@ -3394,7 +3908,9 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
 
     <span class="super-zen-progress" id="szProgress">1/10</span>
   </div>
-</div> 
+  
+  
+</div>
 
 <div id="dictModal" class="dict-modal">
   <div class="dict-modal-content">
@@ -3405,8 +3921,12 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
       </svg>
     </button>
     <div class="dict-char" id="dictChar"></div>
-    <div class="dict-pinyin" id="dictPinyin"></div>
-    <div class="dict-definitions" id="dictDefinitions"></div>
+    
+    <div class="dict-tabs-container" id="dictTabsContainer">
+      </div>
+    <div class="dict-panes-container" id="dictPanesContainer">
+      </div>
+    
   </div>
 </div>
 
@@ -3426,9 +3946,148 @@ Ces lumières paraissent brillantes, mais en réalité, comme lui, elles continu
 'use strict';
 
 // =====================================================
+// CARTE DE FRÉQUENCE DES POLYPHONES (AJOUT)
+// =====================================================
+const POLYPHONE_FREQ_MAP = new Map([
+  ['的', ['de', 'dí', 'dì']],
+  ['地', ['dì', 'de']],
+  ['说', ['shuō', 'shuì']],
+  ['那', ['nà', 'nǎ','Nuó', 'Nā']],
+  ['哪', ['nǎ', 'na','něi', 'né']],
+  ['上', ['shàng', 'shǎng']],
+  ['得', ['de', 'děi', 'dé']],
+  ['行', ['xíng', 'háng']],
+  ['重', ['zhòng', 'chóng']],
+  ['长', ['cháng', 'zhǎng']],
+  ['乐', ['lè', 'yuè']],
+  ['数', ['shù', 'shǔ']],
+  ['发', ['fā', 'fà']],
+  ['为', ['wéi', 'wèi']],
+  ['难', ['nán', 'nàn']],
+  ['空', ['kōng', 'kòng', 'kǒng']],
+  ['么', ['me', 'ma', 'má']],
+  ['处', ['chù', 'chǔ']],
+  ['干', ['gàn', 'gān']],
+  ['觉', ['jué', 'jiào']],
+  ['还', ['hái', 'huán']],
+  ['了', ['le', 'liǎo']],
+  ['着', ['zhe', 'zháo', 'zhuó']],
+  ['都', ['dōu', 'dū']],
+  ['好', ['hǎo', 'hào']],
+  ['少', ['shǎo', 'shào']],
+  ['当', ['dāng', 'dàng']],
+  ['调', ['tiáo', 'diào']],
+  ['应', ['yīng', 'yìng']],
+  ['便', ['biàn', 'pián']],
+  ['倒', ['dào', 'dǎo']],
+  ['省', ['shěng', 'xǐng']],
+  ['看', ['kàn', 'kān']],
+  ['给', ['gěi', 'jǐ']],
+  ['读', ['dú', 'dòu']],
+  ['转', ['zhuǎn', 'zhuàn']],
+  ['强', ['qiáng', 'qiǎng', 'jiàng']],
+  ['奇', ['qí', 'jī']],
+  ['结', ['jié', 'jiē']],
+  ['系', ['xì', 'jì']],
+  ['差', ['chà', 'chā', 'chāi']],
+  ['假', ['jiǎ', 'jià']],
+  ['传', ['chuán', 'zhuàn']],
+  ['弹', ['tán', 'dàn']],
+  ['称', ['chēng', 'chèn']],
+  ['乘', ['chéng', 'shèng']],
+  ['塞', ['sāi', 'sài', 'sè']],
+  ['舍', ['shè', 'shě']],
+  ['折', ['zhé', 'zhē', 'shé']],
+  ['尽', ['jìn', 'jǐn']],
+  ['种', ['zhǒng', 'zhòng']],
+  ['露', ['lù', 'lòu']],
+  ['薄', ['báo', 'bó', 'bò']],
+  ['铺', ['pū', 'pù']],
+  ['供', ['gōng', 'gòng']],
+  ['朝', ['cháo', 'zhāo']],
+  ['查', ['chá', 'zhā']],
+  ['柏', ['bǎi', 'bó', 'bò']],
+  ['模', ['mó', 'mú']],
+  ['恶', ['è', 'wù', 'ě']],
+  ['和', ['hé', 'hè', 'huó', 'huò']],
+  ['中', ['zhōng', 'zhòng']],
+  ['蒙', ['méng', 'měng', 'mēng']],
+  ['磨', ['mó', 'mò']],
+  ['泊', ['bó', 'pō']],
+  ['漂', ['piāo', 'piào']],
+  ['暴', ['bào', 'pù']],
+  ['降', ['jiàng', 'xiáng']],
+  ['圈', ['quān', 'juàn', 'juān']],
+  ['剥', ['bō', 'bāo']],
+  ['藏', ['cáng', 'zàng']],
+  ['晕', ['yūn', 'yùn']],
+  ['划', ['huà', 'huá']],
+  ['背', ['bèi', 'bēi']],
+  ['冲', ['chōng', 'chòng']],
+  ['冠', ['guàn', 'guān']],
+  ['间', ['jiān', 'jiàn']],
+  ['卷', ['juàn', 'juǎn']],
+  ['角', ['jiǎo', 'jué']],
+  ['教', ['jiào', 'jiāo']],
+  ['佛', ['fó', 'fú']],
+  ['核', ['hé', 'hú']],
+  ['盛', ['shèng', 'chéng']],
+  ['曾', ['céng', 'zēng']],
+  ['厦', ['shà', 'xià']],
+  ['只', ['zhǐ', 'zhī']],
+  ['斗', ['dòu', 'dǒu']],
+  ['缝', ['féng', 'fèng']],
+  ['拗', ['ào', 'niù', 'ǒu']],
+  ['更', ['gèng', 'gēng']],
+  ['杆', ['gān', 'gǎn']],
+  ['累', ['lèi', 'lěi', 'léi']],
+  ['哄', ['hōng', 'hǒng', 'hòng']],
+  ['壳', ['ké', 'qiào']],
+  ['咽', ['yàn', 'yān', 'yè']],
+  ['吐', ['tǔ', 'tù']],
+  ['削', ['xuē', 'xiāo']],
+  ['挨', ['ái', 'āi']],
+  ['堡', ['bǎo', 'pù', 'bǔ']],
+  ['翘', ['qiào', 'qiáo']],
+  ['铅', ['qiān', 'yán']],
+  ['嚷', ['rǎng', 'rāng']],
+  ['答', ['dá', 'dā']],
+  ['迫', ['pò', 'pǎi']],
+  ['参', ['cān', 'shēn', 'cēn']],
+  ['臼', ['jiù', 'jū']],
+  ['咯', ['gē', 'luò', 'lo']],
+  ['刹', ['shā', 'chà']],
+  ['掠', ['lüè', 'luě']],
+  ['梁', ['liáng', 'liàng']],
+  ['屏', ['píng', 'bǐng']],
+  ['炮', ['pào', 'páo']],
+  ['刨', ['páo', 'bào']],
+  ['坊', ['fāng', 'fáng']],
+  ['匙', ['chí', 'shi']],
+  ['否', ['fǒu', 'pǐ']],
+  ['朴', ['pǔ', 'piáo', 'pò']],
+  ['咳', ['ké', 'hāi']],
+  ['提', ['tí', 'dī']],
+  ['散', ['sǎn', 'sàn']],
+  ['脏', ['zāng', 'zàng']],
+  ['曲', ['qǔ', 'qū']],
+  ['占', ['zhàn', 'zhān']],
+  ['拆', ['chāi', 'cā']],
+  ['挣', ['zhèng', 'zhēng']],
+  ['挎', ['kuà', 'kuā']],
+  ['跑', ['pǎo', 'páo']],
+  ['量', ['liàng', 'liáng']],
+  ['晃', ['huǎng', 'huàng']],
+  ['拌', ['bàn', 'pàn']],
+  ['钻', ['zuān', 'zuàn']],
+  ['泡', ['pào', 'pāō']],
+  ['闷', ['mèn', 'mēn']]
+]);
+
+// =====================================================
 // VARIABLES GLOBALES
 // =====================================================
-let appMode = 'game';
+let appMode = 'read';
 let dict = { entries: new Map(), wordSet: new Set(), maxLen: 1 };
 let levelMap = new Map();
 
@@ -3444,6 +4103,7 @@ let hintsRevealed = 0;
 let gameDisplayMode = 'all';
 let gameTimerInterval = null;
 let gameStartTime = 0;
+let timeAttackEndTime = 0;
 let currentBlankIndex = 0;
 let fillBlanksData = [];
 let pinyinInputBuffer = '';
@@ -3454,6 +4114,8 @@ let readCategory = 'hsk';
 let readSelectedLevels = new Set([1, 2, 3]);
 let readDisplayMode = 'instant';
 let readFontSize = 34;
+let readInterligne = 1.0; // (100%)
+let readSpacing = 0; // (0px)
 let readCPM = 150;
 let readIsPlaying = false;
 let readCurrentIndex = 0; // Index du caractère chinois courant
@@ -3472,6 +4134,289 @@ let readSentenceBoundaries = [];
 // NOUVEAU: Plus besoin de readSentenceBoundaries, readCurrentSentenceIndex, readSentenceStartTime
 
 let readCurrentSentence = 0; // Gardé pour Super Zen (index de la phrase affichée)
+
+// --- 1. Variables d'état (uniques) ---
+let dnd_draggedElement = null;
+let dnd_placeholder = null;
+let dnd_leaveTimer = null;
+let dnd_touchMovePlaceholder = null;
+let dnd_startX = 0;
+let dnd_startY = 0;
+
+// --- 2. Fonctions de gestion (définies une seule fois) ---
+
+function dnd_handleTokenClick(e) {
+    if (!e.target.classList.contains('word-token')) return;
+    const token = e.target;
+    const currentZone = token.parentNode;
+    const targetZoneId = currentZone.id === 'availableWords' ? 'userSentence' : 'availableWords';
+    const targetZone = document.getElementById(targetZoneId);
+    if (targetZone) {
+        targetZone.appendChild(token);
+    }
+}
+
+function dnd_handleDragStart(e) {
+    dnd_draggedElement = this;
+    e.dataTransfer.effectAllowed = 'move';
+    
+    // Initialise le placeholder global
+    if (!dnd_placeholder) {
+        dnd_placeholder = document.createElement('div');
+        dnd_placeholder.className = 'drop-placeholder';
+    }
+    // Copie les dimensions
+    dnd_placeholder.style.width = `${this.offsetWidth}px`;
+    dnd_placeholder.style.height = `${this.offsetHeight}px`;
+
+    setTimeout(() => this.classList.add('dragging'), 0);
+}
+
+function dnd_handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    if (dnd_leaveTimer) {
+        clearTimeout(dnd_leaveTimer);
+        dnd_leaveTimer = null;
+    }
+
+    const container = this;
+    const afterElement = dnd_getDragAfterElement(container, e.clientX, e.clientY);
+
+    if (afterElement == null) {
+        if (container.lastChild !== dnd_placeholder) {
+            container.appendChild(dnd_placeholder);
+        }
+    } else {
+        if (afterElement.previousSibling !== dnd_placeholder) {
+            container.insertBefore(dnd_placeholder, afterElement);
+        }
+    }
+    dnd_placeholder.classList.add('drag-over');
+}
+
+function dnd_handleDragLeave(e) {
+    dnd_placeholder.classList.remove('drag-over');
+    
+    if (e.relatedTarget && this.contains(e.relatedTarget)) {
+        return;
+    }
+
+    dnd_leaveTimer = setTimeout(() => {
+        if (dnd_placeholder.parentNode) {
+            dnd_placeholder.parentNode.removeChild(dnd_placeholder);
+        }
+        dnd_leaveTimer = null;
+    }, 50);
+}
+
+function dnd_handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (dnd_leaveTimer) {
+        clearTimeout(dnd_leaveTimer);
+        dnd_leaveTimer = null;
+    }
+
+    if (dnd_draggedElement) {
+        if (dnd_placeholder.parentNode) {
+            dnd_placeholder.parentNode.insertBefore(dnd_draggedElement, dnd_placeholder);
+            dnd_placeholder.parentNode.removeChild(dnd_placeholder);
+        } else {
+            this.appendChild(dnd_draggedElement);
+        }
+        dnd_draggedElement.classList.remove('dragging');
+    }
+}
+
+function dnd_handleDragEnd(e) {
+    this.classList.remove('dragging');
+
+    if (dnd_leaveTimer) {
+        clearTimeout(dnd_leaveTimer);
+        dnd_leaveTimer = null;
+    }
+
+    if (dnd_placeholder && dnd_placeholder.parentNode) {
+        dnd_placeholder.parentNode.removeChild(dnd_placeholder);
+    }
+    dnd_draggedElement = null;
+}
+
+function resizeAvailableWords() {
+  // Seulement utile sur mobile
+  if (window.innerWidth > 900) return;
+
+  const avail = document.getElementById('availableWords');
+  const footer = document.getElementById('gameFooterFixed');
+  if (!avail) return;
+
+  // Haut du footer (ou bas de l'écran si pas de footer)
+  const footerTop = footer ? footer.getBoundingClientRect().top : window.innerHeight;
+  // Haut de la boîte des mots
+  const availTop = avail.getBoundingClientRect().top;
+
+  // Petite marge de respiration avec le footer
+  const margin = 8; 
+  const max = Math.max(100, footerTop - availTop - margin);
+
+  // Applique la hauteur max au pixel près
+  avail.style.maxHeight = max + 'px';
+
+  // Active le scroll seulement si besoin
+  if (avail.scrollHeight > max) {
+    avail.style.overflowY = 'auto';
+  } else {
+    avail.style.overflowY = 'visible';
+  }
+
+  // Inertie mobile
+  avail.style.webkitOverflowScrolling = 'touch';
+}
+
+/* Observe les ajouts/suppressions de mots pour réajuster la hauteur */
+function observeAvailableWords() {
+  const avail = document.getElementById('availableWords');
+  if (!avail) return;
+  const mo = new MutationObserver(() => resizeAvailableWords());
+  mo.observe(avail, { childList: true }); // enfants directs suffisent
+}
+
+/* Relance le calcul à chaque changement de taille/orientation */
+function bindResizeForAvailableWords() {
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 900) resizeAvailableWords();
+  });
+  window.addEventListener('orientationchange', () => {
+    // Laisse le temps à la mise en page de se recalculer
+    setTimeout(resizeAvailableWords, 200);
+  });
+}
+
+// --- Fonctions tactiles ---
+
+function dnd_handleTouchStart(e) {
+    if (e.touches.length > 1) return;
+
+    dnd_draggedElement = this;
+    dnd_draggedElement.classList.add('dragging');
+
+    const touch = e.touches[0];
+    dnd_startX = touch.clientX;
+    dnd_startY = touch.clientY;
+
+    // S'assure que le placeholder existe
+    if (!dnd_placeholder) {
+        dnd_placeholder = document.createElement('div');
+        dnd_placeholder.className = 'drop-placeholder';
+    }
+    
+    // Crée le placeholder tactile
+    dnd_touchMovePlaceholder = dnd_placeholder.cloneNode(true);
+    dnd_touchMovePlaceholder.style.width = `${dnd_draggedElement.offsetWidth}px`;
+    dnd_touchMovePlaceholder.style.height = `${dnd_draggedElement.offsetHeight}px`;
+
+    dnd_draggedElement.style.position = 'fixed';
+    dnd_draggedElement.style.zIndex = '10005';
+    dnd_draggedElement.style.left = `${touch.clientX - dnd_draggedElement.offsetWidth / 2}px`;
+    dnd_draggedElement.style.top = `${touch.clientY - dnd_draggedElement.offsetHeight / 2}px`;
+}
+
+function dnd_handleTouchMove(e) {
+    if (!dnd_draggedElement || e.touches.length > 1) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    dnd_draggedElement.style.left = `${touch.clientX - dnd_draggedElement.offsetWidth / 2}px`;
+    dnd_draggedElement.style.top = `${touch.clientY - dnd_draggedElement.offsetHeight / 2}px`;
+
+    dnd_draggedElement.style.display = 'none';
+    let elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    dnd_draggedElement.style.display = '';
+
+    let dropZone = null;
+    if (elementBelow) {
+        dropZone = elementBelow.closest('.words-zone');
+    }
+
+    if (dropZone) {
+        const afterElement = dnd_getDragAfterElement(dropZone, touch.clientX, touch.clientY);
+        
+        if (afterElement == null) {
+            if (dropZone.lastChild !== dnd_touchMovePlaceholder) {
+                dropZone.appendChild(dnd_touchMovePlaceholder);
+            }
+        } else {
+            if (afterElement.previousSibling !== dnd_touchMovePlaceholder) {
+                dropZone.insertBefore(dnd_touchMovePlaceholder, afterElement);
+            }
+        }
+    } else if (dnd_touchMovePlaceholder.parentNode) {
+        dnd_touchMovePlaceholder.parentNode.removeChild(dnd_touchMovePlaceholder);
+    }
+}
+
+function dnd_handleTouchEnd(e) {
+    if (!dnd_draggedElement) return;
+
+    if (dnd_touchMovePlaceholder && dnd_touchMovePlaceholder.parentNode) {
+        dnd_touchMovePlaceholder.parentNode.insertBefore(dnd_draggedElement, dnd_touchMovePlaceholder);
+        dnd_touchMovePlaceholder.parentNode.removeChild(dnd_touchMovePlaceholder);
+    }
+
+    dnd_draggedElement.classList.remove('dragging');
+    dnd_draggedElement.style.position = '';
+    dnd_draggedElement.style.zIndex = '';
+    dnd_draggedElement.style.left = '';
+    dnd_draggedElement.style.top = '';
+
+    dnd_draggedElement = null;
+    dnd_touchMovePlaceholder = null;
+}
+
+// --- Fonction utilitaire ---
+
+function dnd_getDragAfterElement(container, x, y) {
+    // 1. On récupère tous les mots, sauf celui qu'on déplace
+    const draggableElements = [...container.querySelectorAll('.word-token:not(.dragging)')];
+
+    // 2. On parcourt tous les mots dans l'ordre du DOM
+    for (const child of draggableElements) {
+        const box = child.getBoundingClientRect();
+
+        // CAS 1: Le curseur (y) est AU-DESSUS de l'élément (box.top)
+        // L'élément 'child' est sur une ligne inférieure.
+        // On doit donc insérer AVANT 'child'.
+        if (y < box.top) {
+            return child;
+        }
+
+        // CAS 2: Le curseur (y) est SUR LA MÊME LIGNE que l'élément
+        if (y >= box.top && y <= box.bottom) {
+            
+            // On vérifie la position X.
+            // Si le curseur (x) est à GAUCHE du MILIEU de l'élément...
+            // on doit insérer AVANT 'child'.
+            if (x < (box.left + box.width / 2)) {
+                return child;
+            }
+            
+            // Si on est à droite du milieu, cet élément 'child' est AVANT nous.
+            // On continue donc la boucle pour voir le suivant.
+        }
+
+        // CAS 3: Le curseur (y) est EN DESSOUS de l'élément (box.bottom)
+        // L'élément 'child' est sur une ligne supérieure. Il est donc AVANT nous.
+        // On continue la boucle.
+    }
+
+    // 3. Si on a parcouru tous les éléments sans rien trouver,
+    // c'est que le curseur est après tous les mots.
+    // On doit donc insérer à la fin.
+    return null; 
+}
 
 
 // =====================================================
@@ -3500,7 +4445,7 @@ function splitSentences(text) {
 }
 
 function parseCedict(raw) {
-    const entries = new Map();
+    const entries = new Map(); // La clé est 'simp', la valeur est un Array d'objets
     const wordSet = new Set();
     let maxLen = 1;
 
@@ -3511,12 +4456,19 @@ function parseCedict(raw) {
         const m = L.match(/^(\S+)\s+(\S+)\s+\[([^\]]+)\]\s+\/(.+)\/$/);
         if (!m) continue;
 
+        const trad = m[1]; 
         const simp = m[2];
         const pinyin = m[3];
         const defs = m[4].split('/').filter(Boolean);
+        
+        const newEntry = { trad, simp, pinyin, defs }; // Créer l'objet entrée
 
+        // Si la clé n'existe pas, initialiser avec un tableau
         if (!entries.has(simp)) {
-            entries.set(simp, { simp, pinyin, defs });
+            entries.set(simp, [newEntry]);
+        } else {
+            // Si la clé existe, pousser la nouvelle entrée dans le tableau
+            entries.get(simp).push(newEntry);
         }
 
         wordSet.add(simp);
@@ -4033,7 +4985,7 @@ function adjustFontSizeForSentenceLength() {
     const timeAttackTarget = document.getElementById('time-attack-target-text');
     const freeInputTarget = document.getElementById('free-input-target-text');
     
-// Tailles de police de base (prises du CSS)
+    // Tailles de police de base (prises du CSS)
     const baseTokenSize = 24; // .word-token
     const baseTokenPadding = 12; // .word-token padding vertical
     const baseHintSize = 16; /* <-- Taille mise à jour */
@@ -4051,32 +5003,84 @@ function adjustFontSizeForSentenceLength() {
         const ratio = Math.min(1, (length - minLength) / (maxLength - minLength));
         reductionFactor = 1.0 - (ratio * (1.0 - minFactor));
     }
+}
 
-    // *** MODIFICATION : Mettre tout ce bloc en commentaire ***
-    /*
-    // Appliquer aux tokens du mode Drag & Drop (s'ils existent)
-    const tokens = document.querySelectorAll('#availableWords .word-token, #userSentence .word-token');
-    tokens.forEach(token => {
-        token.style.fontSize = `${baseTokenSize * reductionFactor}px`;
-        // Réduire aussi le padding pour que les tokens prennent moins de place
-        token.style.padding = `${baseTokenPadding * reductionFactor}px ${baseTokenPadding * 1.6 * reductionFactor}px`;
-    });
-    */
-    // *** FIN DE LA MODIFICATION ***
+function adjustInterligne(delta) {
+    const min = 60; 
+    const max = 150;
+    const currentPercent = Math.round(readInterligne * 100);
+    let newPercent = Math.max(min, Math.min(max, currentPercent + delta));
+    readInterligne = newPercent / 100;
+
+    // Mettre à jour les 3 éléments
+    const toolbarSpan = document.getElementById('readLineHeight');
+    const sliderSpan = document.getElementById('readInterligneValue');
+    const sliderInput = document.getElementById('readInterligne_slider'); // <-- ID CORRIGÉ
+
+    if (toolbarSpan) toolbarSpan.textContent = newPercent + '%';
+    if (sliderSpan) sliderSpan.textContent = newPercent + '%';
+    if (sliderInput) sliderInput.value = newPercent;
+    
+    applyReadStyles();
+}
+
+function adjustSpacing(delta) {
+    const min = 0;
+    const max = 10;
+    let newPx = Math.max(min, Math.min(max, readSpacing + delta));
+    readSpacing = newPx;
+
+    // Mettre à jour les 3 éléments
+    const toolbarSpan = document.getElementById('readSpacing');
+    const sliderSpan = document.getElementById('readSpacingValue');
+    const sliderInput = document.getElementById('readSpacing_slider'); // <-- ID CORRIGÉ
+
+    if (toolbarSpan) toolbarSpan.textContent = newPx + 'px';
+    if (sliderSpan) sliderSpan.textContent = newPx + 'px';
+    if (sliderInput) sliderInput.value = newPx;
+    
+    applyReadStyles();
+}
 
 
-    // Appliquer à la traduction
-    if (translationHint) {
-        translationHint.style.fontSize = `${baseHintSize * reductionFactor}px`;
+function applyReadStyles() {
+    // Sélectionne les bons éléments même en mode flip ou super zen
+    const readText = document.querySelector('#readText');
+    const readTranslation = document.querySelector('#readTranslation');
+    
+    // Valeurs de base (depuis votre CSS)
+    const baseLineHeightZh = 2.2;
+    const baseLineHeightTr = 1.8;
+
+    if (readText) {
+        // Applique la taille de police principale (lue depuis les options)
+        readText.style.fontSize = readFontSize + 'px';
+        
+        // Applique l'interligne et l'espacement
+        readText.style.lineHeight = (baseLineHeightZh * readInterligne);
+        readText.style.letterSpacing = readSpacing + 'px';
     }
     
-    // Appliquer aux autres modes "Frappe"
-    if (typingTarget) {
-        typingTarget.style.fontSize = `${(baseTypingSize * 0.85) * reductionFactor}px`;
+    if (readTranslation) {
+        // --- NOUVELLE LOGIQUE DE RATIO ---
+        if (readSuperZen) {
+            // En Super Zen : 70% de la taille (30% plus petit)
+            readTranslation.style.fontSize = (readFontSize * 0.7) + 'px';
+        } else {
+            // En mode normal : 80% de la taille (l'ancien comportement)
+            readTranslation.style.fontSize = (readFontSize * 0.8) + 'px';
+        }
+        // --- FIN DE LA NOUVELLE LOGIQUE ---
+
+        // Applique l'interligne et l'espacement
+        readTranslation.style.lineHeight = (baseLineHeightTr * readInterligne);
+        readTranslation.style.wordSpacing = readSpacing + 'px';
     }
 }
 
 function loadSentence() {
+hidePinyinTonePopup();
+hidePinyinTonePopup();
   // === AJOUT : Réinitialiser les tailles de police des conteneurs ===
   const elementsToReset = [
       document.getElementById('translationHint'),
@@ -4098,7 +5102,7 @@ function loadSentence() {
 
   const resultDiv = document.getElementById('gameResult');
   const gameActions = document.querySelector('.game-actions');
-  if (resultDiv && gameActions) {
+  if (resultDiv && gameActions && window.innerWidth <= 900) {
     gameActions.parentNode.insertBefore(resultDiv, gameActions);
   }
 
@@ -4158,6 +5162,12 @@ if(freeInputTarget) freeInputTarget.style.display = 'none';
   switch (currentGameMode) {
     case 'reorder-drag':
       initReorderMode();
+	  if (window.innerWidth <= 900 && typeof resizeAvailableWords === 'function') {
+    requestAnimationFrame(() => {
+    resizeAvailableWords();
+       setTimeout(resizeAvailableWords, 150);
+  });
+}
       break;
 case 'free-input':
   initFreeMode();
@@ -4252,7 +5262,9 @@ function initReorderMode() {
   // === AJOUT : Appeler l'ajustement ICI ===
   // Cela garantit que la police est redimensionnée dès que les tokens sont créés.
   adjustFontSizeForSentenceLength();
-  // === FIN AJOUT ===
+  observeAvailableWords();
+requestAnimationFrame(resizeAvailableWords);
+
 }
 
 function createWordToken(word) {
@@ -4269,210 +5281,38 @@ function createWordToken(word) {
 
 function setupDragAndDrop() {
     const containers = [document.getElementById('availableWords'), document.getElementById('userSentence')];
-    let draggedElement = null;
-    let placeholder = document.createElement('div');
-    placeholder.className = 'drop-placeholder';
-
-    let touchMovePlaceholder = null;
-    let startX = 0;
-    let startY = 0;
-
+    
+    // 1. Nettoie et attache les écouteurs sur les mots (tokens)
     document.querySelectorAll('.word-token').forEach(token => {
-        token.removeEventListener('dragstart', handleDragStart);
-        token.removeEventListener('dragend', handleDragEnd);
-        token.removeEventListener('touchstart', handleTouchStart);
-        token.removeEventListener('touchmove', handleTouchMove);
-        token.removeEventListener('touchend', handleTouchEnd);
-        token.removeEventListener('click', handleTokenClick);
+        // Nettoyage avec les BONNES références de fonction
+        token.removeEventListener('dragstart', dnd_handleDragStart);
+        token.removeEventListener('dragend', dnd_handleDragEnd);
+        token.removeEventListener('touchstart', dnd_handleTouchStart);
+        token.removeEventListener('touchmove', dnd_handleTouchMove);
+        token.removeEventListener('touchend', dnd_handleTouchEnd);
+        token.removeEventListener('click', dnd_handleTokenClick);
 
-        token.addEventListener('dragstart', handleDragStart);
-        token.addEventListener('dragend', handleDragEnd);
-        token.addEventListener('touchstart', handleTouchStart, { passive: false });
-        token.addEventListener('touchmove', handleTouchMove, { passive: false });
-        token.addEventListener('touchend', handleTouchEnd);
-        token.addEventListener('click', handleTokenClick);
+        // Attachement
+        token.addEventListener('dragstart', dnd_handleDragStart);
+        token.addEventListener('dragend', dnd_handleDragEnd);
+        token.addEventListener('touchstart', dnd_handleTouchStart, { passive: false });
+        token.addEventListener('touchmove', dnd_handleTouchMove, { passive: false });
+        token.addEventListener('touchend', dnd_handleTouchEnd);
+        token.addEventListener('click', dnd_handleTokenClick);
     });
 
+    // 2. Nettoie et attache les écouteurs sur les conteneurs
     containers.forEach(container => {
-        container.removeEventListener('dragover', handleDragOver);
-        container.removeEventListener('dragleave', handleDragLeave);
-        container.removeEventListener('drop', handleDrop);
+        // Nettoyage avec les BONNES références de fonction
+        container.removeEventListener('dragover', dnd_handleDragOver);
+        container.removeEventListener('dragleave', dnd_handleDragLeave);
+        container.removeEventListener('drop', dnd_handleDrop);
 
-        container.addEventListener('dragover', handleDragOver);
-        container.addEventListener('dragleave', handleDragLeave);
-        container.addEventListener('drop', handleDrop);
+        // Attachement
+        container.addEventListener('dragover', dnd_handleDragOver);
+        container.addEventListener('dragleave', dnd_handleDragLeave);
+        container.addEventListener('drop', dnd_handleDrop);
     });
-
-    function handleTokenClick(e) {
-        if (!e.target.classList.contains('word-token')) return;
-        const token = e.target;
-        const currentZone = token.parentNode;
-        const targetZoneId = currentZone.id === 'availableWords' ? 'userSentence' : 'availableWords';
-        const targetZone = document.getElementById(targetZoneId);
-        if (targetZone) {
-            targetZone.appendChild(token);
-        }
-    }
-
-    function handleDragStart(e) {
-        draggedElement = this;
-        e.dataTransfer.effectAllowed = 'move';
-        setTimeout(() => this.classList.add('dragging'), 0);
-    }
-
-    function handleDragEnd(e) {
-        this.classList.remove('dragging');
-        if (placeholder.parentNode) {
-            placeholder.parentNode.removeChild(placeholder);
-        }
-        draggedElement = null;
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-
-        const container = this;
-        // *** MODIFIÉ : Ajout de e.clientY ***
-        const afterElement = getDragAfterElement(container, e.clientX, e.clientY);
-
-        if (afterElement == null) {
-            container.appendChild(placeholder);
-        } else {
-            container.insertBefore(placeholder, afterElement);
-        }
-        placeholder.classList.add('drag-over');
-    }
-
-    function handleDragLeave(e) {
-         placeholder.classList.remove('drag-over');
-         if (e.relatedTarget && this.contains(e.relatedTarget)) {
-            return;
-         }
-         if (placeholder.parentNode) {
-            placeholder.parentNode.removeChild(placeholder);
-         }
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (draggedElement) {
-            if (placeholder.parentNode) {
-                 placeholder.parentNode.insertBefore(draggedElement, placeholder);
-                 placeholder.parentNode.removeChild(placeholder);
-            } else {
-                this.appendChild(draggedElement);
-            }
-            draggedElement.classList.remove('dragging');
-        }
-    }
-
-    function handleTouchStart(e) {
-        if (e.touches.length > 1) return;
-
-        draggedElement = this;
-        draggedElement.classList.add('dragging');
-
-        const touch = e.touches[0];
-        startX = touch.clientX;
-        startY = touch.clientY;
-
-        touchMovePlaceholder = placeholder.cloneNode(true);
-        touchMovePlaceholder.style.width = `${draggedElement.offsetWidth}px`;
-        touchMovePlaceholder.style.height = `${draggedElement.offsetHeight}px`;
-
-        draggedElement.style.position = 'fixed';
-        draggedElement.style.zIndex = '10005';
-        draggedElement.style.left = `${touch.clientX - draggedElement.offsetWidth / 2}px`;
-        draggedElement.style.top = `${touch.clientY - draggedElement.offsetHeight / 2}px`;
-    }
-
-    function handleTouchMove(e) {
-        if (!draggedElement || e.touches.length > 1) return;
-        e.preventDefault();
-
-        const touch = e.touches[0];
-
-        draggedElement.style.left = `${touch.clientX - draggedElement.offsetWidth / 2}px`;
-        draggedElement.style.top = `${touch.clientY - draggedElement.offsetHeight / 2}px`;
-
-        draggedElement.style.display = 'none';
-        let elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-        draggedElement.style.display = '';
-
-        let dropZone = null;
-        if (elementBelow) {
-             dropZone = elementBelow.closest('.words-zone');
-        }
-
-        if (dropZone) {
-            // *** MODIFIÉ : Ajout de touch.clientY ***
-            const afterElement = getDragAfterElement(dropZone, touch.clientX, touch.clientY);
-            if (afterElement) {
-                dropZone.insertBefore(touchMovePlaceholder, afterElement);
-            } else {
-                dropZone.appendChild(touchMovePlaceholder);
-            }
-        } else if (touchMovePlaceholder.parentNode) {
-             touchMovePlaceholder.parentNode.removeChild(touchMovePlaceholder);
-        }
-    }
-
-    function handleTouchEnd(e) {
-        if (!draggedElement) return;
-
-        if (touchMovePlaceholder && touchMovePlaceholder.parentNode) {
-            touchMovePlaceholder.parentNode.insertBefore(draggedElement, touchMovePlaceholder);
-            touchMovePlaceholder.parentNode.removeChild(touchMovePlaceholder);
-        }
-
-        draggedElement.classList.remove('dragging');
-        draggedElement.style.position = '';
-        draggedElement.style.zIndex = '';
-        draggedElement.style.left = '';
-        draggedElement.style.top = '';
-
-        draggedElement = null;
-        touchMovePlaceholder = null;
-    }
-
-    // *** FONCTION ENTIÈREMENT REMPLACÉE ***
-    function getDragAfterElement(container, x, y) {
-        const draggableElements = [...container.querySelectorAll('.word-token:not(.dragging)')];
-
-        let closestElement = null;
-        let minDistance = Number.POSITIVE_INFINITY;
-
-        // Trouver l'élément le plus proche en 2D
-        for (const child of draggableElements) {
-            const box = child.getBoundingClientRect();
-            const centerX = box.left + box.width / 2;
-            const centerY = box.top + box.height / 2;
-            
-            // Calculer la distance euclidienne
-            const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestElement = child;
-            }
-        }
-
-        if (closestElement === null) {
-            return null; // Le conteneur est vide
-        } else {
-            const box = closestElement.getBoundingClientRect();
-            // Décider s'il faut insérer avant ou après l'élément le plus proche
-            // en fonction de la position X du curseur par rapport au centre X de l'élément
-            if (x < box.left + box.width / 2) {
-                return closestElement; // Insérer AVANT l'élément le plus proche
-            } else {
-                return closestElement.nextElementSibling; // Insérer APRÈS (c'est-à-dire avant son frère suivant)
-            }
-        }
-    }
 }
 
 
@@ -4535,6 +5375,7 @@ function initLiveTypingMode(isTimeAttack = false) {
     document.getElementById('statChars').textContent = `0/${targetText.length}`;
 
     if (isTimeAttack) {
+        // Cette logique est seulement pour l'affichage initial de l'objectif, pas le timer
         const targetCPM = parseInt(document.getElementById('cpmAttackTarget').value, 10);
         const targetTime = Math.ceil((targetText.length / targetCPM) * 60);
         document.getElementById('statTime').textContent = `0s / ${targetTime}s`;
@@ -4589,16 +5430,18 @@ function initLiveTypingMode(isTimeAttack = false) {
             });
 
             if (typedText.length !== targetText.length) {
-                 showResult(false, 'Phrase non terminée.');
+                 showResult(false, '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Phrase non terminée.');
                  setTimeout(() => { document.getElementById('gameResult').style.display = 'none'; }, 2000);
                  return;
             }
 
             if (errors === 0) {
-                if (isTimeAttack) {
-                    stopGameTimer();
-                }
-                showResult(true, 'Correct !');
+                // --- CORRECTION (Ligne 1549) ---
+                // On arrête le timer dans les DEUX modes (Time Attack ET Frappe Directe)
+                stopGameTimer();
+                // --- FIN CORRECTION ---
+
+                showResult(true, '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Correct !');
                 inputEl.blur();
                 setTimeout(() => {
                     if (currentSentenceIndex < sentences.length - 1) {
@@ -4608,7 +5451,7 @@ function initLiveTypingMode(isTimeAttack = false) {
                     }
                 }, 1500);
             } else {
-                 showResult(false, `Incorrect (${errors} erreur(s)).`);
+                 showResult(false, `<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Incorrect (${errors} erreur(s)).`);
                  setTimeout(() => { document.getElementById('gameResult').style.display = 'none'; }, 2000);
             }
         }
@@ -4733,22 +5576,68 @@ function initFillBlanksMode(isPinyin = false) {
 
               blank.dataset.index = blankCounter; // Index du mot blanc
               blank.dataset.word = token.text;    // Mot chinois correct
-              // --- NOUVEAU: Logique Pinyin améliorée ---
+              
+              // ==========================================================
+              // DÉBUT DE LA LOGIQUE PINYIN CORRIGÉE (RÉSOUT LE CRASH)
+              // ==========================================================
               let pinyins = [];
-              const wordEntry = dict.entries.get(token.text); // (e.g., get '屏幕')
+              let entries = dict.entries.get(token.text); // Récupère le tableau d'entrées
 
-              if (wordEntry) {
-                  // On a trouvé le mot ! Utiliser son pinyin.
-                  const pinyinParts = wordEntry.pinyin.split(' '); // (e.g., ['ping2', 'mu4'])
-                  pinyins = pinyinParts.map(p => p ? numericToDiacriticPinyin(p).toLowerCase() : '');
+              // 1. Tri des entrées si c'est un polyphone connu (ex: "着")
+              if (entries && entries.length > 1 && token.text.length === 1 && POLYPHONE_FREQ_MAP.has(token.text)) {
+                const freqList = POLYPHONE_FREQ_MAP.get(token.text);
+                const freqMap = new Map();
+                freqList.forEach((p, index) => { if (!freqMap.has(p)) freqMap.set(p, index); });
+
+                // Tri sur une COPIE pour ne pas affecter le dictionnaire global
+                entries = [...entries].sort((a, b) => {
+                  const pinyinA = numericToDiacriticPinyin(a.pinyin);
+                  const pinyinB = numericToDiacriticPinyin(b.pinyin);
+                  const scoreA = freqMap.has(pinyinA) ? freqMap.get(pinyinA) : 99;
+                  const scoreB = freqMap.has(pinyinB) ? freqMap.get(pinyinB) : 99;
+                  return scoreA - scoreB;
+                });
+                // 'entries' est maintenant un NOUVEAU tableau trié localement
+                // (ex: pour "着", entries[0] sera l'entrée 'zhe')
+              }
+              
+              // 2. Récupérer la première entrée (la plus fréquente ou celle par défaut)
+              //    C'EST LE CORRECTIF PRINCIPAL DU CRASH
+              const firstEntry = (entries && entries.length > 0) ? entries[0] : null;
+
+              // 3. Gérer les mots (ex: "屏幕") vs les caractères (ex: "着")
+              if (firstEntry && token.text.length > 1) {
+                // CAS A: C'est un mot de plusieurs caractères (ex: "屏幕")
+                // On utilise la prononciation du mot complet
+                const pinyinParts = firstEntry.pinyin.split(' ');
+                pinyins = pinyinParts.map(p => p ? numericToDiacriticPinyin(p).toLowerCase() : '');
               } else {
-                  // Mot non trouvé (ex: nom propre), fallback vers caractère par caractère
-                  pinyins = token.text.split('').map(char => {
-                      const entry = dict.entries.get(char);
-                      // Prend la première prononciation (fallback)
-                      const pinyinRaw = entry ? entry.pinyin.split(' ')[0] : '';
-                      return pinyinRaw ? numericToDiacriticPinyin(pinyinRaw).toLowerCase() : '';
-                  });
+                // CAS B: C'est un mot d'un seul caractère (ex: "着")
+                // OU un mot qui n'est pas dans le dictionnaire (ex: "刘哲")
+                // On fait un fallback caractère par caractère
+                pinyins = token.text.split('').map(char => {
+                  let charEntries = dict.entries.get(char); // Récupère les entrées pour ce caractère
+                  
+                  // Tri par fréquence pour ce caractère individuel
+                  if (charEntries && charEntries.length > 1 && POLYPHONE_FREQ_MAP.has(char)) {
+                    const freqList = POLYPHONE_FREQ_MAP.get(char);
+                    const freqMap = new Map();
+                    freqList.forEach((p, index) => { if (!freqMap.has(p)) freqMap.set(p, index); });
+                    
+                    charEntries = [...charEntries].sort((a, b) => {
+                      const pinyinA = numericToDiacriticPinyin(a.pinyin);
+                      const pinyinB = numericToDiacriticPinyin(b.pinyin);
+                      const scoreA = freqMap.has(pinyinA) ? freqMap.get(pinyinA) : 99;
+                      const scoreB = freqMap.has(pinyinB) ? freqMap.get(pinyinB) : 99;
+                      return scoreA - scoreB;
+                    });
+                  }
+                  
+                  // On prend la première prononciation (la plus fréquente ou celle par défaut)
+                  const firstCharEntry = (charEntries && charEntries.length > 0) ? charEntries[0] : null;
+                  const pinyinRaw = firstCharEntry ? firstCharEntry.pinyin.split(' ')[0] : '';
+                  return pinyinRaw ? numericToDiacriticPinyin(pinyinRaw).toLowerCase() : '';
+                });
               }
               
               // Vérifier que le nombre de pinyins correspond au nombre de caractères
@@ -4757,13 +5646,15 @@ function initFillBlanksMode(isPinyin = false) {
                    // Fallback (ancien comportement) si la paires pinyin/char ne correspond pas
                    pinyins = token.text.split('').map(char => {
                       const entry = dict.entries.get(char);
-                      const pinyinRaw = entry ? entry.pinyin.split(' ')[0] : '';
+                      // Prend la PREMIÈRE prononciation (non triée)
+                      const pinyinRaw = (entry && entry.length > 0) ? entry[0].pinyin.split(' ')[0] : '';
                       return pinyinRaw ? numericToDiacriticPinyin(pinyinRaw).toLowerCase() : '';
                    });
               }
               
               const pinyinsStr = pinyins.join(',');
-              // --- Fin de la nouvelle logique ---
+              // --- FIN DE LA NOUVELLE LOGIQUE ---
+              // ==========================================================
 
               blank.dataset.index = blankCounter; // Index du mot blanc
               blank.dataset.word = token.text;    // Mot chinois correct
@@ -4803,6 +5694,7 @@ function initFillBlanksMode(isPinyin = false) {
   // --- Enlever/Ajouter le listener clavier ---
   if (inputEl) {
       inputEl.onkeydown = null; // Enlever l'ancien listener
+	  inputEl.onblur = hidePinyinTonePopup;
       if (isPinyin && pinyinInputType === 'keyboard') {
           // Remettre le listener SEULEMENT si mode clavier Pinyin
           inputEl.onkeydown = (e) => {
@@ -4823,9 +5715,10 @@ function initFillBlanksMode(isPinyin = false) {
            }
       }
   } 
-} 
+}
 
 function focusBlank(index) {
+hidePinyinTonePopup();
     if (index < 0 || index >= fillBlanksData.length) return;
 
     // --- Enlever le focus visuel de l'ancien blank ---
@@ -4898,6 +5791,7 @@ function focusBlank(index) {
 }
 
 function validateBlank(isPinyin) {
+hidePinyinTonePopup();
     if (currentBlankIndex >= fillBlanksData.length) return;
 
     const currentData = fillBlanksData[currentBlankIndex];
@@ -4964,7 +5858,7 @@ function validateBlank(isPinyin) {
         } else {
             // Fin de la phrase
             inputEl.blur();
-            showResult(true, "Phrase complétée !");
+            showResult(true, '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Phrase complétée !');
             setTimeout(() => {
               if (currentSentenceIndex < sentences.length - 1) {
                 goToSentence(1);
@@ -4975,7 +5869,8 @@ function validateBlank(isPinyin) {
         }
     } else {
         // --- Réponse incorrecte ---
-        showResult(false, isPinyin ? "Pinyin incorrect. Essayez encore !" : "Mot incorrect. Essayez encore !");
+        const errorMsg = isPinyin ? "Pinyin incorrect. Essayez encore !" : "Mot incorrect. Essayez encore !";
+showResult(false, '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ' + errorMsg);
         
         // Afficher le résultat temporairement
         setTimeout(() => {
@@ -5196,7 +6091,8 @@ function handlePinyinOptionClick(selectedPinyin) {
                 // --- PHRASE COMPLÈTE ---
                 document.getElementById('pinyin-mcq-options').innerHTML = ''; // Vider les options
                 const allWordsCorrect = fillBlanksData.every(data => data.status === 'correct');
-                showResult(allWordsCorrect, allWordsCorrect ? "Phrase complétée !" : "Phrase complétée (avec des erreurs).");
+                const mcqMessage = allWordsCorrect ? '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Phrase complétée !' : '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Phrase complétée (avec des erreurs).';
+showResult(allWordsCorrect, mcqMessage);
                 
                 setTimeout(() => {
                     if (currentSentenceIndex < sentences.length - 1) {
@@ -5383,7 +6279,9 @@ function validateAnswer() {
   } // End switch
 
   // Show the result (unless handled internally like in fill-blanks before completion)
-  showResult(isCorrect, isCorrect ? '✅ Correct !' : '❌ Incorrect. Essayez encore !');
+  const correctMessage = '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Correct !';
+const incorrectMessage = '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Incorrect. Essayez encore !';
+showResult(isCorrect, isCorrect ? correctMessage : incorrectMessage);
 
   // Handle navigation or retry based on correctness
   if (isCorrect && !currentGameMode.startsWith('fill-blanks')) {
@@ -5435,7 +6333,7 @@ function showResult(success, message) {
 
 
     resultDiv.className = success ? 'game-result success' : 'game-result error';
-    resultDiv.textContent = message;
+    resultDiv.innerHTML = message;
     resultDiv.style.display = 'block';
 }
 
@@ -5545,78 +6443,76 @@ function quitGame() {
 }
 
 function startGameTimer() {
-    console.log("DEBUG: Attempting to start timer for mode:", currentGameMode); // Log 1
+    console.log("DEBUG: Attempting to start timer for mode:", currentGameMode);
     stopGameTimer(); // Clear any previous timer
 
-    const timerDisplay = document.getElementById('gameTimer');
     const statTimeDisplay = document.getElementById('statTime');
 
-    if (!timerDisplay) {
-        console.error("DEBUG: Timer display element #gameTimer not found!"); // Log Error
-        return; // Exit if the main display is missing
+    if (!statTimeDisplay) {
+        console.error("DEBUG: Timer display element #statTime not found!");
+        return; 
     }
 
     if (currentGameMode === 'time-attack') {
-        console.log("DEBUG: Setting up Time Attack countdown..."); // Log 2a
-        // --- Existing Time Attack Countdown Logic ---
+        // --- Mode Minuteur (Time Attack) ---
+        console.log("DEBUG: Setting up Time Attack countdown...");
+        
+        // Votre logique dynamique (correcte)
         const targetCPM = parseInt(document.getElementById('cpmAttackTarget').value, 10);
         const targetText = originalSentence.replace(/[,\s]/g, '');
         let targetSeconds = Math.ceil((targetText.length / targetCPM) * 60);
-        if (targetSeconds < 5) targetSeconds = 5; // Minimum time
+        if (targetSeconds < 5) targetSeconds = 5; // Minimum 5 secondes
 
         let remainingSeconds = targetSeconds;
-        console.log("DEBUG: Target seconds:", targetSeconds); // Log 3a
+        console.log("DEBUG: Target seconds:", targetSeconds);
 
         const updateCountdownUI = () => {
             const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
             const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
             const timeString = `${minutes}:${seconds}`;
-            // console.log("DEBUG Time Attack Tick:", timeString); // Optionnel: Log every second
-            timerDisplay.textContent = timeString;
-            if (statTimeDisplay) statTimeDisplay.textContent = timeString;
+            statTimeDisplay.textContent = timeString; // Mettre à jour le bon élément
         };
 
-        updateCountdownUI(); // Initial display
+        updateCountdownUI(); // Affichage initial
 
         gameTimerInterval = setInterval(() => {
-            console.log("DEBUG: Time Attack Interval Fired. Remaining:", remainingSeconds -1); // Log 4a
             remainingSeconds--;
             updateCountdownUI();
 
             if (remainingSeconds <= 0) {
-                 console.log("DEBUG: Time Attack finished."); // Log 5a
+                 console.log("DEBUG: Time Attack finished.");
                 stopGameTimer();
-                showResult(false, "Temps écoulé ! Perdu.");
+                showResult(false, '<svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Temps écoulé ! Perdu.');
                 const inputEl = document.getElementById('time-attack-input');
                 if (inputEl) inputEl.disabled = true;
             }
         }, 1000);
-         console.log("DEBUG: Time Attack interval set with ID:", gameTimerInterval); // Log 6a
+         console.log("DEBUG: Time Attack interval set with ID:", gameTimerInterval);
 
-    } else {
-        console.log("DEBUG: Setting up standard chronometer..."); // Log 2b
-        // --- Standard Chronometer Logic for other modes ---
+    // ===================================
+    // === LA CORRECTION EST SUR CETTE LIGNE ===
+    // ===================================
+    } else if (currentGameMode === 'live-typing') { 
+        // L'ID correct est 'live-typing', et non 'frappe-directe'
+        
+        // --- Mode Chronomètre (Frappe Live) ---
+        console.log("DEBUG: Setting up standard chronometer...");
         gameStartTime = Date.now();
-
-        if (statTimeDisplay) statTimeDisplay.textContent = '0s'; // Clear stats timer display
 
         const updateChronoUI = () => {
              const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
              const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
              const seconds = (elapsed % 60).toString().padStart(2, '0');
              const timeString = `${minutes}:${seconds}`;
-             // console.log("DEBUG Chrono Tick:", timeString); // Optionnel: Log every second
-             timerDisplay.textContent = timeString;
+             statTimeDisplay.textContent = timeString; // Mettre à jour le bon élément
         };
 
-        updateChronoUI(); // Initial display (00:00)
+        updateChronoUI(); // Affichage initial (00:00)
 
-        gameTimerInterval = setInterval(() => {
-            console.log("DEBUG: Chrono Interval Fired."); // Log 4b
-            updateChronoUI();
-        }, 1000);
-        console.log("DEBUG: Chrono interval set with ID:", gameTimerInterval); // Log 6b
+        gameTimerInterval = setInterval(updateChronoUI, 1000);
+        console.log("DEBUG: Chrono interval set with ID:", gameTimerInterval);
     }
+    // Les autres modes (reorder, etc.) ne déclencheront pas le 'else if' et n'auront pas de timer.
 }
 
 function stopGameTimer() {
@@ -5717,49 +6613,91 @@ function detectSentenceBoundaries() {
     return;
   }
 
-  // --- Détection normale ---
+  // --- Détection normale (CORRIGÉE) ---
   const chinesePunct = new Set(['。', '！', '？']);
-  const translationPunct = new Set(['.', '!', '?']); // Ponctuations de fin de phrase en français
+  const translationPunct = new Set(['.', '!', '?']);
+  
+  const expectedSentenceCount = readSentences.length; // LA SOURCE DE VÉRITÉ
 
   let currentChineseStart = 0;
   let currentTranslationStart = 0;
-  let sentenceIndex = 0;
 
   // Parcourir les caractères chinois pour trouver les fins de phrases
   for (let i = 0; i < readChars.length; i++) {
     const char = readChars[i];
     const text = char.textContent;
 
-    // Si c'est une ponctuation de fin OU si c'est le tout dernier caractère chinois
-    if (chinesePunct.has(text) || i === readChars.length - 1) {
+    const isChineseEnd = chinesePunct.has(text);
+    const isLastChineseChar = (i === readChars.length - 1);
+    const notDone = readSentenceBoundaries.length < expectedSentenceCount; // On n'a pas encore toutes nos phrases
+
+    if ((isChineseEnd || isLastChineseChar) && notDone) {
       const chineseEnd = i + 1; // Inclure la ponctuation ou le dernier caractère
       const chineseLength = chineseEnd - currentChineseStart;
 
       // Trouver la fin de phrase correspondante dans la traduction
-      // On cherche la ponctuation de fin après la position proportionnelle
-      let translationEnd = currentTranslationStart; // Valeur par défaut
+      let translationEnd = currentTranslationStart;
       let translationLength = 0;
-      if (readTranslationChars.length > 0) {
-           // Position approximative attendue dans la traduction
-           const expectedRatio = chineseEnd / readChars.length;
-           const expectedTranslationPos = Math.floor(expectedRatio * readTranslationChars.length);
 
-           // Chercher la prochaine ponctuation de fin *après* la position attendue (ou la fin si pas trouvée)
-           let foundPunct = false;
-           for(let j = Math.max(currentTranslationStart, expectedTranslationPos - 5); j < readTranslationChars.length; j++) { // Cherche un peu avant aussi
-               if(translationPunct.has(readTranslationChars[j].textContent)) {
-                   translationEnd = j + 1;
-                   foundPunct = true;
-                   break;
+      if (readTranslationChars.length > 0) {
+          
+          // Sommes-nous sur la toute dernière phrase attendue ?
+          const isLastExpectedSentence = (readSentenceBoundaries.length === expectedSentenceCount - 1);
+
+          if (isLastExpectedSentence) {
+               // Si c'est la dernière phrase, on prend TOUT ce qui reste.
+               translationEnd = readTranslationChars.length;
+               console.log(`Boundary ${readSentenceBoundaries.length}: Last sentence. Grabbing all remaining translation.`);
+          } else {
+              // Ce n'est pas la dernière phrase. On cherche la prochaine ponctuation.
+              // Position approximative attendue
+               const expectedRatio = (i+1) / readChars.length;
+               const expectedTranslationPos = Math.floor(expectedRatio * readTranslationChars.length);
+               
+               let foundPunct = false;
+               // Chercher à partir de la position de départ.
+               // On cherche .!? OU le span ' ' des paragraphes
+               const searchStart = Math.max(currentTranslationStart, expectedTranslationPos - 15); // Regarde un peu en arrière
+
+               for(let j = searchStart; j < readTranslationChars.length; j++) {
+                   const trChar = readTranslationChars[j];
+                   if (!trChar) continue; // Sécurité
+                   const trText = trChar.textContent;
+                   const isPunct = translationPunct.has(trText);
+                   // Le ' ' est un span inséré entre les paragraphes par prepareTranslationForTyping
+                   const isParaBreak = (trText === ' ' && j > currentTranslationStart); 
+
+                   if (isPunct || isParaBreak) {
+                       translationEnd = j + 1; // Inclure le délimiteur
+                       foundPunct = true;
+                       console.log(`Boundary ${readSentenceBoundaries.length}: Found delimiter at ${j}`);
+                       break;
+                   }
                }
-           }
-           // Si pas de ponctuation trouvée avant la fin, ou si c'est la dernière phrase chinoise
-           if (!foundPunct || sentenceIndex === splitSentences(document.getElementById('inputZh').value).length -1) {
-                translationEnd = readTranslationChars.length; // Prendre tout ce qui reste
-           }
-           // Éviter que translationEnd soit avant translationStart (cas étranges)
-           translationEnd = Math.max(translationEnd, currentTranslationStart);
-           translationLength = translationEnd - currentTranslationStart;
+               
+               // SI ON NE TROUVE RIEN (ex: pas de point)
+               if (!foundPunct) {
+                   // NE PAS PRENDRE TOUTE LA FIN.
+                   // Utiliser le ratio comme "meilleure estimation".
+                   // On devine une position basée sur le ratio, en s'assurant qu'elle avance
+                   translationEnd = Math.floor(expectedTranslationPos + (expectedTranslationPos - currentTranslationStart) * 0.5); 
+                   translationEnd = Math.max(translationEnd, currentTranslationStart + 5); // Avancer d'au moins 5
+                   translationEnd = Math.min(translationEnd, readTranslationChars.length); // Ne pas dépasser
+                   
+                   // S'assurer qu'on n'est pas bloqué
+                   if (translationEnd <= currentTranslationStart) {
+                       translationEnd = expectedTranslationPos; // Fallback sur le ratio pur
+                   }
+                   // S'assurer de ne pas prendre la dernière phrase par erreur
+                   if (readSentenceBoundaries.length < expectedSentenceCount - 2) {
+                       translationEnd = Math.min(translationEnd, readTranslationChars.length - 5); // Garder une marge
+                   }
+                   translationEnd = Math.max(currentTranslationStart + 1, translationEnd); // Forcer à avancer
+                   
+                   console.log(`Boundary ${readSentenceBoundaries.length}: NO delimiter. Guessing end at ${translationEnd}`);
+               }
+          }
+          translationLength = translationEnd - currentTranslationStart;
       }
 
 
@@ -5775,27 +6713,25 @@ function detectSentenceBoundaries() {
       // Mettre à jour les points de départ pour la prochaine phrase
       currentChineseStart = chineseEnd;
       currentTranslationStart = translationEnd;
-      sentenceIndex++;
 
        // Si on a consommé toute la traduction, on arrête
        if(currentTranslationStart >= readTranslationChars.length) break;
     }
   }
 
-  // S'il ne reste aucun caractère chinois mais qu'il reste de la traduction (rare),
-  // créer une dernière "phrase" pour la traduction restante.
-    if(currentChineseStart >= readChars.length && currentTranslationStart < readTranslationChars.length) {
-        readSentenceBoundaries.push({
-            chineseStart: currentChineseStart,
-            chineseEnd: readChars.length,
-            translationStart: currentTranslationStart,
-            translationEnd: readTranslationChars.length,
-            chineseLength: 0,
-            translationLength: readTranslationChars.length - currentTranslationStart
-        });
-    }
-
-  console.log('📝 Phrases détectées:', readSentenceBoundaries.length, readSentenceBoundaries);
+  // S'il reste de la traduction mais pas de chinois (rare)
+  if(currentTranslationStart < readTranslationChars.length && readSentenceBoundaries.length < expectedSentenceCount) {
+      readSentenceBoundaries.push({
+          chineseStart: currentChineseStart,
+          chineseEnd: readChars.length,
+          translationStart: currentTranslationStart,
+          translationEnd: readTranslationChars.length,
+          chineseLength: 0,
+          translationLength: readTranslationChars.length - currentTranslationStart
+      });
+  }
+  
+  console.log('📝 Phrases détectées (FIXED):', readSentenceBoundaries.length, readSentenceBoundaries);
 }
 
 function startReadMode() {
@@ -6194,12 +7130,15 @@ function renderReadText() {
     const tokens = segmentText(sentence, dict.wordSet, dict.maxLen);
     tokens.forEach(token => appendToken(token, readTextEl, readChars));
     
-    if (readTranslations[readCurrentSentence]) {
+    // --- MODIFICATION ICI ---
+    // Appliquer la taille de police Super Zen actuelle
+if (readTranslations[readCurrentSentence]) {
         readTranslationEl.textContent = readTranslations[readCurrentSentence];
         readTranslationEl.style.display = 'block';
     } else {
         readTranslationEl.style.display = 'none';
     }
+    // --- FIN DE LA MODIFICATION ---
     
     const szProgress = document.getElementById('szProgress');
     if(szProgress) szProgress.textContent = `${readCurrentSentence + 1}/${readSentences.length}`;
@@ -6278,7 +7217,7 @@ function renderReadText() {
            Array.from(readTranslationEl.querySelectorAll('span')).forEach(span => span.style.visibility = 'visible');
       }
   }
-
+  applyReadStyles();
   applyReadColors(); // Appliquer les couleurs HSK/Freq toujours à la fin
 }
 
@@ -6298,7 +7237,6 @@ function updateFocusButtonState() {
     }
 }
 
-// Helper pour renderReadText
 // Helper pour renderReadText: Ajoute un token (mot ou ponctuation) au DOM
 function appendToken(token, parentElement, charArray) {
   // --- Vérifications initiales ---
@@ -6324,6 +7262,11 @@ function appendToken(token, parentElement, charArray) {
     const category = readCategory || 'hsk'; // Utilise 'hsk' par défaut si indéfini
     const lvl = getLevel(word, category); // Récupère le niveau HSK/Freq du mot complet
 
+    // === MODIFICATION : Créer un wrapper pour le mot ===
+    const wordWrapper = document.createElement('span');
+    wordWrapper.className = 'read-word'; // Nouvelle classe pour le wrapper
+    wordWrapper.setAttribute('data-word-wrapper', word); // Mettre le mot sur le wrapper
+
     // Itérer sur chaque caractère du mot pour créer un span individuel
     for (let i = 0; i < word.length; i++) {
       const char = word[i]; // Caractère individuel
@@ -6341,17 +7284,16 @@ function appendToken(token, parentElement, charArray) {
         }
       }
 
-      // --- AJOUTER L'ÉCOUTEUR DE CLIC ICI ---
-      // C'est cette ligne qui permet d'ouvrir le modal
-      span.addEventListener('click', () => {
-        console.log(`Clic détecté sur '${char}' du mot '${word}'`); // Log pour débogage
-        openDictModal(word); // Appelle la fonction pour ouvrir le modal avec le mot complet
-      });
-
-      // Ajouter le span au parent et au tableau global
-      parentElement.appendChild(span);
-      charArray.push(span);
+      // [SUPPRIMÉ] L'ancien addEventListener('click') est retiré d'ici
+      
+      // Ajouter le span au wrapper (au lieu de 'parentElement')
+      wordWrapper.appendChild(span);
+      charArray.push(span); // Ajouter au tableau global (inchangé)
     }
+    
+    // Ajouter le wrapper au parent
+    parentElement.appendChild(wordWrapper);
+    
   } else {
     // Cas imprévu (e.g., token.type inconnu ou mot vide)
     console.warn("appendToken: Type de token inconnu ou mot vide ignoré:", token);
@@ -6361,104 +7303,199 @@ function appendToken(token, parentElement, charArray) {
 
 function openDictModal(word) {
   console.log('🔍 openDictModal appelée avec:', word);
-  console.log('📦 État du modal:', document.getElementById('dictModal'));
-  console.log('Fonction openDictModal appelée avec le mot:', word); // Log pour vérifier l'appel
 
-  // --- 1. Récupération des éléments du Modal ---
+  // --- 1. Récupération des éléments ---
   const modal = document.getElementById('dictModal');
-  const content = modal ? modal.querySelector('.dict-modal-content') : null;
   const charEl = document.getElementById('dictChar');
-  const pinyinEl = document.getElementById('dictPinyin');
-  const defsEl = document.getElementById('dictDefinitions');
-  const closeBtn = document.getElementById('closeDictModal'); // Récupérer le bouton fermer
+  const tabsContainer = document.getElementById('dictTabsContainer');
+  const panesContainer = document.getElementById('dictPanesContainer');
+  const closeBtn = document.getElementById('closeDictModal');
+  const content = modal.querySelector('.dict-modal-content');
 
-  console.log('Éléments du modal trouvés:', { modal, content, charEl, pinyinEl, defsEl }); // Log pour vérifier les éléments
-
-  // Vérification essentielle : si les éléments n'existent pas, on ne peut pas continuer.
-  if (!modal || !content || !charEl || !pinyinEl || !defsEl) {
-    console.error("Erreur critique: Un ou plusieurs éléments du modal sont manquants dans le HTML ! Vérifiez les IDs: dictModal, dictChar, dictPinyin, dictDefinitions.");
-    return; // Arrêter la fonction ici
+  if (!modal || !content || !charEl || !tabsContainer || !panesContainer) {
+    console.error("Erreur critique: Éléments du modal (tabs/panes) manquants !");
+    return;
   }
 
-  // --- 2. Recherche de l'entrée dans le dictionnaire ---
-  const entry = dict.entries.get(word);
-  console.log('Entrée trouvée dans le dictionnaire:', entry); // Log pour vérifier l'entrée
-
-  // --- 3. Remplissage des informations de base (Caractère, Pinyin, Définitions) ---
-  charEl.textContent = word; // Toujours afficher le mot cliqué
-
-  if (!entry) {
-    // Cas où le mot n'est pas trouvé dans le dictionnaire
-    pinyinEl.textContent = '—'; // Indicateur pour "non trouvé"
-    defsEl.innerHTML = '<div class="dict-def">Aucune définition trouvée</div>'; // Message clair
-  } else {
-    // Cas où le mot est trouvé
-    pinyinEl.textContent = numericToDiacriticPinyin(entry.pinyin); // Convertir et afficher le pinyin
-
-    // Vider les anciennes définitions et ajouter les nouvelles
-    defsEl.innerHTML = ''; // Important pour ne pas cumuler les définitions
-    if (entry.defs && entry.defs.length > 0) {
-      entry.defs.forEach(def => {
-        const defDiv = document.createElement('div');
-        defDiv.className = 'dict-def';
-        defDiv.textContent = def;
-        defsEl.appendChild(defDiv);
-      });
-    } else {
-      // Si l'entrée existe mais n'a pas de définition
-      defsEl.innerHTML = '<div class="dict-def">Aucune définition disponible pour ce mot.</div>';
-    }
-  }
-
-  // --- 4. Gestion des Tags (HSK / Fréquence) ---
-  // Supprimer l'ancien conteneur de tags s'il existe pour éviter les doublons
+  // --- 2. Vider l'ancien contenu ---
+  charEl.textContent = word;
+  tabsContainer.innerHTML = '';
+  panesContainer.innerHTML = '';
   const existingTagsContainer = content.querySelector('.dict-tags-container');
   if (existingTagsContainer) {
     existingTagsContainer.remove();
   }
 
-  // Récupération des niveaux (même si l'entrée dictionnaire est absente)
+  // --- 3. Gestion des Tags (HSK / Fréquence) ---
   const hskLevel = getLevel(word, 'hsk');
   const freqLevel = getLevel(word, 'freq');
   const freqLabels = ['0-1k', '1-2k', '2-3k', '3-4k', '4-5k', '5-7k', '7-10k', '10-15k', '15-40k'];
 
-  // Créer le conteneur de tags seulement si au moins un niveau est trouvé
   if (hskLevel > 0 || freqLevel > 0) {
     const tagsContainer = document.createElement('div');
     tagsContainer.className = 'dict-tags-container';
-
-    // Ajouter le tag HSK s'il existe
     if (hskLevel > 0) {
       const hskTag = document.createElement('span');
-      const hskClassSuffix = hskLevel === 7 ? '79' : hskLevel; // Gérer le cas HSK 7-9
+      const hskClassSuffix = hskLevel === 7 ? '79' : hskLevel;
       const hskText = hskLevel === 7 ? 'HSK 7-9' : `HSK ${hskLevel}`;
       hskTag.className = `dict-tag level-${hskClassSuffix}`;
       hskTag.textContent = hskText;
       tagsContainer.appendChild(hskTag);
     }
-
-    // Ajouter le tag Fréquence s'il existe et est valide
     if (freqLevel > 0 && freqLevel <= freqLabels.length) {
       const freqTag = document.createElement('span');
       freqTag.className = `dict-tag freq-${freqLevel}`;
-      freqTag.textContent = freqLabels[freqLevel - 1]; // Index 0 pour niveau 1
+      freqTag.textContent = freqLabels[freqLevel - 1];
       tagsContainer.appendChild(freqTag);
     }
-
-    // Insérer le conteneur de tags juste après l'élément Pinyin
-    // `pinyinEl.after(tagsContainer)` est une méthode moderne et plus simple
-    pinyinEl.after(tagsContainer);
+    charEl.after(tagsContainer);
   }
 
-  // --- 5. Afficher le Modal ---
-  console.log('Tentative d\'affichage du modal (ajout classe active)'); // Log avant affichage
+  // --- 4. Recherche & Logique de tri ---
+  const entries = dict.entries.get(word); // Récupère le TABLEAU d'entrées
+  let entriesToDisplay = entries;
+
+  if (entries && entries.length > 1 && word.length === 1 && POLYPHONE_FREQ_MAP.has(word)) {
+    console.log('Application du tri de fréquence pour:', word);
+    const freqList = POLYPHONE_FREQ_MAP.get(word);
+    const freqMap = new Map();
+    freqList.forEach((p, index) => {
+        if (!freqMap.has(p)) freqMap.set(p, index);
+    });
+    console.log('Carte de fréquence:', freqMap);
+
+    // Tri sur une COPIE
+    entriesToDisplay = [...entries].sort((a, b) => {
+        const pinyinA = numericToDiacriticPinyin(a.pinyin);
+        const pinyinB = numericToDiacriticPinyin(b.pinyin);
+        const scoreA = freqMap.has(pinyinA) ? freqMap.get(pinyinA) : 99;
+        const scoreB = freqMap.has(pinyinB) ? freqMap.get(pinyinB) : 99;
+        return scoreA - scoreB;
+    });
+    console.log('Entrées triées:', entriesToDisplay.map(e => e.pinyin));
+  }
+
+  // ================================================================
+  // DÉBUT DE LA LOGIQUE DE FUSION DES DOUBLONS
+  // ================================================================
+
+  // 5. Créer une carte pour regrouper les définitions par pinyin
+  const groupedPinyinMap = new Map();
+
+  if (entriesToDisplay) {
+    entriesToDisplay.forEach(entry => {
+      // 5a. Normaliser le pinyin (e.g., "bo2" -> "bó" -> "bó")
+      const pinyinDiacritic = numericToDiacriticPinyin(entry.pinyin);
+      const groupKey = pinyinDiacritic.toLowerCase(); // Clé de groupement
+
+      // 5b. Si le groupe n'existe pas, l'initialiser
+      if (!groupedPinyinMap.has(groupKey)) {
+        groupedPinyinMap.set(groupKey, {
+          pinyin: pinyinDiacritic, // Conserver la casse originale pour l'affichage (e.g., Bó)
+          defs: new Set() // Utiliser un Set pour dédupliquer automatiquement les définitions
+        });
+      }
+
+      // 5c. Ajouter les définitions au Set
+      const groupData = groupedPinyinMap.get(groupKey);
+      if (entry.defs && entry.defs.length > 0) {
+        entry.defs.forEach(def => groupData.defs.add(def));
+      }
+    });
+  }
+  
+  console.log('Groupes fusionnés:', groupedPinyinMap);
+
+  // 6. Générer l'UI à partir de la carte fusionnée
+  const groupedEntries = Array.from(groupedPinyinMap.values());
+
+  if (groupedEntries.length > 1) {
+    // --- CAS 1: PLUSIEURS PRONONCIATIONS FUSIONNÉES -> AFFICHER LES ONGLETS ---
+    tabsContainer.style.display = 'flex';
+
+    groupedEntries.forEach((group, index) => {
+      // a. Créer l'onglet (bouton)
+      const tabBtn = document.createElement('button');
+      tabBtn.className = 'dict-tab-btn';
+      tabBtn.dataset.tabId = `dict-pane-${index}`;
+      tabBtn.textContent = group.pinyin.split(' ')[0]; // Pinyin pour l'onglet
+      tabsContainer.appendChild(tabBtn);
+
+      // b. Créer le panneau (définition)
+      const pane = document.createElement('div');
+      pane.className = 'dict-pane';
+      pane.id = `dict-pane-${index}`;
+      
+      let paneHTML = `<div class="dict-pinyin">${group.pinyin}</div>`; // Pinyin complet dans le panneau
+      paneHTML += '<div class="dict-definitions">';
+      
+      if (group.defs.size > 0) {
+        group.defs.forEach(def => { // Itérer sur le Set de définitions uniques
+          paneHTML += `<div class="dict-def">${def.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+        });
+      } else {
+        paneHTML += `<div class="dict-def">Aucune définition.</div>`;
+      }
+      
+      paneHTML += '</div>';
+      pane.innerHTML = paneHTML;
+      panesContainer.appendChild(pane);
+
+      // c. Activer le premier
+      if (index === 0) {
+        tabBtn.classList.add('active');
+        pane.classList.add('active');
+      }
+    });
+
+  } else if (groupedEntries.length === 1) {
+    // --- CAS 2: UNE SEULE PRONONCIATION FUSIONNÉE -> PAS D'ONGLETS ---
+    tabsContainer.style.display = 'none';
+    
+    const group = groupedEntries[0]; // Prendre le seul groupe
+
+    const pane = document.createElement('div');
+    pane.className = 'dict-pane active';
+    pane.id = `dict-pane-0`;
+    
+    let paneHTML = `<div class="dict-pinyin">${group.pinyin}</div>`;
+    paneHTML += '<div class="dict-definitions">';
+    
+    if (group.defs.size > 0) {
+      group.defs.forEach(def => {
+        paneHTML += `<div class="dict-def">${def.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+      });
+    } else {
+      paneHTML += `<div class="dict-def">Aucune définition.</div>`;
+    }
+    
+    paneHTML += '</div>';
+    pane.innerHTML = paneHTML;
+    panesContainer.appendChild(pane);
+
+  } else {
+    // --- CAS 3: NON TROUVÉ (avec fallback sur le 1er caractère) ---
+    tabsContainer.style.display = 'none';
+
+    const firstChar = word.charAt(0);
+    if (word.length > 1) {
+        const firstCharEntries = dict.entries.get(firstChar);
+        if (firstCharEntries && firstCharEntries.length > 0) {
+            openDictModal(firstChar); // Appel récursif
+            return;
+        }
+    }
+    
+    panesContainer.innerHTML = '<div class="dict-pane active"><div class="dict-definitions"><div class="dict-def">Aucune définition trouvée.</div></div></div>';
+  }
+  
+  // ================================================================
+  // FIN DE LA LOGIQUE DE FUSION
+  // ================================================================
+
+  // --- 7. Afficher le Modal ---
   modal.classList.add('active');
-
-  // Optionnel: Ajouter un focus sur le bouton fermer pour l'accessibilité
-  if (closeBtn) {
-    // Mettre le focus après un très court délai pour s'assurer que le modal est visible
-    setTimeout(() => closeBtn.focus(), 50);
-  }
+  if (closeBtn) setTimeout(() => closeBtn.focus(), 50);
 }
 
 function closeModal(modalId) { // Fonction closeModal générique conservée
@@ -6479,7 +7516,7 @@ function startTypeAnimation() {
   readTranslationCurrentIndex = 0;
   readIsPlaying = true;
 
-  // Mettre à jour l'icône Play/Pause... (comme avant)
+  // Mettre à jour l'icône Play/Pause...
   const btn = document.getElementById('readPlayPause');
   if (btn) btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
   const szBtn = document.getElementById('szBtnPlay');
@@ -6493,22 +7530,40 @@ function startTypeAnimation() {
   const progressBar = document.getElementById('readProgressBar');
   if(progressBar) progressBar.style.width = '0%';
 
-  // S'assurer que les boundaries sont détectées
-  detectSentenceBoundaries(); // Essentiel pour cette logique
+  // S'assurer que les boundaries sont détectées (pour Superzen)
+  detectSentenceBoundaries();
 
   // --- Lancer les animations ---
   const chineseCharDelay = (readChars.length > 0 && readCPM > 0) ? (60000 / readCPM) : Infinity;
-  const minDelay = 10; // Délai minimum absolu
+  const minDelay = 10;
+  const effectiveChineseDelay = Math.max(minDelay, chineseCharDelay);
+
+  // === NOUVELLE LOGIQUE DE TIMING ===
+  let translationCharDelay = null; // null = mode Superzen (dynamique), valeur = mode Frappe (fixe)
+
+  if (!readSuperZen) {
+      // On est en mode "Frappe" normal. On force la synchro globale.
+      const totalChineseDuration = readChars.length * effectiveChineseDelay;
+      if (readTranslationChars.length > 0) {
+          translationCharDelay = totalChineseDuration / readTranslationChars.length;
+          translationCharDelay = Math.max(minDelay, translationCharDelay); // Appliquer le délai minimum
+      }
+      console.log(`SYNC MODE: Global. ZH Delay: ${effectiveChineseDelay.toFixed(2)}ms. TR Delay: ${translationCharDelay ? translationCharDelay.toFixed(2) : 'N/A'}ms`);
+  } else {
+      console.log("SYNC MODE: Superzen (par phrase).");
+  }
+  // === FIN NOUVELLE LOGIQUE ===
 
   if (readChars.length > 0 && chineseCharDelay !== Infinity) {
-      scheduleNextChineseChar(Math.max(minDelay, chineseCharDelay));
+      scheduleNextChineseChar(effectiveChineseDelay);
   } else {
       checkAnimationEnd();
   }
 
   // Lancer la traduction - elle calculera son premier délai à l'intérieur
   if (readTranslationChars.length > 0) {
-      scheduleNextTranslationChar();
+      // On passe le délai (fixe ou null)
+      scheduleNextTranslationChar(translationCharDelay); 
   } else {
        checkAnimationEnd();
   }
@@ -6548,56 +7603,68 @@ function scheduleNextChineseChar(delay) {
 }
 
 // --- Fonction récursive pour l'animation de traduction (MODIFIED - calcule délai DYNAMIQUEMENT) ---
-function scheduleNextTranslationChar() {
-    if (!readIsPlaying || readTranslationCurrentIndex >= readTranslationChars.length || readSentenceBoundaries.length === 0) {
+function scheduleNextTranslationChar(forcedDelay = null) {
+    if (!readIsPlaying || readTranslationCurrentIndex >= readTranslationChars.length) {
         checkAnimationEnd();
         return;
     }
 
-    // 1. Trouver la phrase (boundary) correspondant à l'index de traduction ACTUEL
-    let currentSentenceData = null;
-    let boundaryIndex = -1;
-    for(let i = 0; i < readSentenceBoundaries.length; i++) {
-        // La boundary est valide si l'index de traduction est DANS ses limites de traduction
-        if (readTranslationCurrentIndex >= readSentenceBoundaries[i].translationStart &&
-            readTranslationCurrentIndex < readSentenceBoundaries[i].translationEnd)
-        {
-             currentSentenceData = readSentenceBoundaries[i];
-             boundaryIndex = i;
-             break;
-        }
-    }
-    // Cas spécial: si l'index de traduction a dépassé la fin, mais qu'il en reste (peut arriver si boundaries imparfaites)
-    // On prend la dernière boundary comme référence pour le délai.
-     if (!currentSentenceData && readTranslationCurrentIndex < readTranslationChars.length && readSentenceBoundaries.length > 0) {
-         currentSentenceData = readSentenceBoundaries[readSentenceBoundaries.length - 1];
-         boundaryIndex = readSentenceBoundaries.length - 1;
-         console.warn("Translation index out of bounds, using last sentence data.");
-     }
-
-    // 2. Calculer le délai basé sur la durée de la phrase chinoise correspondante
-    let translationCharDelay = 60000 / readCPM; // Délai par défaut
+    let translationCharDelay = 500; // Un délai par défaut
     const minDelay = 10; // Délai minimum
 
-    if (currentSentenceData) {
-        const chineseCharDelay = (readCPM > 0) ? (60000 / readCPM) : 500; // Délai par caractère chinois
-        // Durée totale de la phrase chinoise (ms)
-        const chineseSentenceDuration = currentSentenceData.chineseLength * chineseCharDelay;
-
-        // Calculer le délai par caractère de traduction pour CETTE phrase
-        if (currentSentenceData.translationLength > 0 && chineseSentenceDuration > 0) {
-            translationCharDelay = chineseSentenceDuration / currentSentenceData.translationLength;
-        } else if (currentSentenceData.translationLength > 0 && chineseSentenceDuration <= 0) {
-            // Si phrase chinoise vide/instantanée, utiliser vitesse de base
-            translationCharDelay = chineseCharDelay;
-        } else {
-            // Pas de traduction pour cette phrase, délai infini (ne devrait pas arriver ici si check initial ok)
-             translationCharDelay = Infinity;
-        }
+    if (forcedDelay !== null) {
+        // --- CAS 1: Mode "Frappe" Normal (Délai global fixe) ---
+        translationCharDelay = forcedDelay;
     } else {
-        // Pas trouvé de boundary valide -> utiliser délai par défaut
-        console.warn("Could not find sentence boundary for translation index:", readTranslationCurrentIndex);
-        translationCharDelay = 60000 / readCPM;
+        // --- CAS 2: Mode "Superzen" (Délai dynamique par phrase) ---
+        // (C'est l'ancienne logique, qui fonctionne pour Superzen)
+        if (readSentenceBoundaries.length === 0) {
+             console.error("Superzen: Pas de boundaries. Fallback.");
+             translationCharDelay = (readCPM > 0) ? (60000 / readCPM) : 500;
+        } else {
+            // 1. Trouver la phrase (boundary) correspondant à l'index de traduction ACTUEL
+            let currentSentenceData = null;
+            let boundaryIndex = -1;
+            for(let i = 0; i < readSentenceBoundaries.length; i++) {
+                // La boundary est valide si l'index de traduction est DANS ses limites de traduction
+                if (readTranslationCurrentIndex >= readSentenceBoundaries[i].translationStart &&
+                    readTranslationCurrentIndex < readSentenceBoundaries[i].translationEnd)
+                {
+                     currentSentenceData = readSentenceBoundaries[i];
+                     boundaryIndex = i;
+                     break;
+                }
+            }
+            // Cas spécial: si l'index de traduction a dépassé la fin, mais qu'il en reste (peut arriver si boundaries imparfaites)
+            // On prend la dernière boundary comme référence pour le délai.
+             if (!currentSentenceData && readTranslationCurrentIndex < readTranslationChars.length && readSentenceBoundaries.length > 0) {
+                 currentSentenceData = readSentenceBoundaries[readSentenceBoundaries.length - 1];
+                 boundaryIndex = readSentenceBoundaries.length - 1;
+                 console.warn("Translation index out of bounds, using last sentence data.");
+             }
+
+            // 2. Calculer le délai basé sur la durée de la phrase chinoise correspondante
+            if (currentSentenceData) {
+                const chineseCharDelay = (readCPM > 0) ? (60000 / readCPM) : 500;
+                // Durée totale de la phrase chinoise (ms)
+                const chineseSentenceDuration = currentSentenceData.chineseLength * chineseCharDelay;
+
+                // Calculer le délai par caractère de traduction pour CETTE phrase
+                if (currentSentenceData.translationLength > 0 && chineseSentenceDuration > 0) {
+                    translationCharDelay = chineseSentenceDuration / currentSentenceData.translationLength;
+                } else if (currentSentenceData.translationLength > 0 && chineseSentenceDuration <= 0) {
+                    // Si phrase chinoise vide/instantanée, utiliser vitesse de base
+                    translationCharDelay = chineseCharDelay;
+                } else {
+                    // Pas de traduction pour cette phrase, délai infini (ne devrait pas arriver ici si check initial ok)
+                     translationCharDelay = Infinity;
+                }
+            } else {
+                // Pas trouvé de boundary valide -> utiliser délai par défaut
+                console.warn("Could not find sentence boundary for translation index:", readTranslationCurrentIndex);
+                translationCharDelay = (readCPM > 0) ? (60000 / readCPM) : 500;
+            }
+        }
     }
 
     // Assurer un délai minimum
@@ -6609,9 +7676,9 @@ function scheduleNextTranslationChar() {
         if (trChar) trChar.style.visibility = 'visible';
         readTranslationCurrentIndex++;
 
-        // Planifier le prochain avec le délai calculé pour cette phrase
+        // Planifier le prochain avec le délai calculé (et passer forcedDelay à nouveau)
         if(readTranslationTimer) clearTimeout(readTranslationTimer); // Clear previous
-        readTranslationTimer = setTimeout(scheduleNextTranslationChar, translationCharDelay);
+        readTranslationTimer = setTimeout(() => scheduleNextTranslationChar(forcedDelay), translationCharDelay);
     } else {
         // Délai infini (pas de trad pour cette phrase?), attendre simplement la fin du chinois
         checkAnimationEnd(); // Vérifier si le chinois est fini
@@ -6665,11 +7732,25 @@ function togglePlayPause() {
       // Recalculate delays based on current state (important for translation)
       const chineseCharDelay = (readChars.length > 0 && readCPM > 0) ? (60000 / readCPM) : Infinity;
       const minDelay = 10;
+      const effectiveChineseDelay = Math.max(minDelay, chineseCharDelay);
+
+      // === NOUVELLE LOGIQUE DE TIMING (POUR REPRISE) ===
+      let translationCharDelay = null; // null = mode Superzen (dynamique)
+      if (!readSuperZen) {
+          // On est en mode "Frappe" normal. On re-calcule le délai fixe.
+          const totalChineseDuration = readChars.length * effectiveChineseDelay;
+          if (readTranslationChars.length > 0) {
+              translationCharDelay = totalChineseDuration / readTranslationChars.length;
+              translationCharDelay = Math.max(minDelay, translationCharDelay);
+          }
+      }
+      // === FIN NOUVELLE LOGIQUE ===
+
 
       // Re-schedule Chinese character if not finished
       if (readCurrentIndex < readChars.length && chineseCharDelay !== Infinity) {
           if(readTimer) clearTimeout(readTimer); // Clear just in case
-          readTimer = setTimeout(() => scheduleNextChineseChar(Math.max(minDelay, chineseCharDelay)), Math.max(minDelay, chineseCharDelay)); // Use delay for first resume tick too
+          readTimer = setTimeout(() => scheduleNextChineseChar(effectiveChineseDelay), effectiveChineseDelay); // Use delay for first resume tick too
       } else {
            checkAnimationEnd(); // Check if finished
       }
@@ -6677,8 +7758,8 @@ function togglePlayPause() {
       // Re-schedule Translation character if not finished
       if (readTranslationCurrentIndex < readTranslationChars.length) {
           if(readTranslationTimer) clearTimeout(readTranslationTimer); // Clear just in case
-          // Schedule normally, it will calculate its own delay based on current Chinese index
-          readTranslationTimer = setTimeout(scheduleNextTranslationChar, 50); // Start check shortly after resume
+          // Schedule normally, il passera le bon délai (fixe ou null)
+          readTranslationTimer = setTimeout(() => scheduleNextTranslationChar(translationCharDelay), 50); // Start check shortly after resume
       } else {
           checkAnimationEnd(); // Check if finished
       }
@@ -6713,6 +7794,7 @@ function prepareTranslationForTyping() {
           const text = node.textContent;
           for (let i = 0; i < text.length; i++) {
               const span = document.createElement('span');
+              span.className = 'read-char'; // <--- CORRECTION AJOUTÉE ICI
               span.textContent = text[i];
               span.style.visibility = 'hidden';
               translationContainer.appendChild(span);
@@ -6723,6 +7805,7 @@ function prepareTranslationForTyping() {
           Array.from(node.childNodes).forEach(processNode);
           if (isParagraph && node !== clone.lastElementChild) {
               const spaceSpan = document.createElement('span');
+              spaceSpan.className = 'read-char'; // <--- CORRECTION AJOUTÉE ICI
               spaceSpan.textContent = ' ';
               spaceSpan.style.visibility = 'hidden';
               translationContainer.appendChild(spaceSpan);
@@ -6792,46 +7875,49 @@ function toggleSuperZen() {
   const szPlayBtn = document.getElementById('szBtnPlay');
 
   readSuperZen = !readSuperZen;
-  stopTypeAnimation(); // Stop any ongoing animation
+  stopTypeAnimation(); 
 
   if (readSuperZen) {
-    // Entering Super Zen
+    // Entrée en Super Zen
     page.classList.add('super-zen');
     readCurrentSentence = 0;
-    readSuperZenType = false; // Start in non-typing mode
+    readSuperZenType = false; 
+    
+    // szCurrentFontSize a été supprimé
+    
     const typeBtn = document.getElementById('szBtnType');
     if(typeBtn) typeBtn.classList.remove('active');
 
-    // Disable main play button as it's not used here
     if(mainPlayPauseBtn) mainPlayPauseBtn.disabled = true;
-    // Disable SZ play button initially (since not in type mode)
     if(szPlayBtn) szPlayBtn.disabled = true;
 
-    renderReadText(); // Renders the single sentence
-    // Ensure text is visible in initial SZ non-typing mode
+    renderReadText(); 
     readChars.forEach(char => char.style.visibility = 'visible');
     readTranslationChars.forEach(char => char.style.visibility = 'visible');
 
   } else {
-    // Exiting Super Zen
+    // Sortie de Super Zen
     page.classList.remove('super-zen');
     readSuperZenType = false;
-    isFlipped = false; // Reset flip
+    isFlipped = false; 
 
-    // Re-enable main play button ONLY if the main mode is 'type'
     if(mainPlayPauseBtn) {
         mainPlayPauseBtn.disabled = (readDisplayMode === 'instant');
     }
 
-    renderReadText(); // Re-render full text for normal mode
+    renderReadText(); 
+    
+    // --- AJOUT : Effacer les styles de police Super Zen ---
+    const readTextEl = document.getElementById('readText');
+    const readTranslationEl = document.getElementById('readTranslation');
+    if(readTextEl) readTextEl.style.fontSize = ''; // Effacer le style en ligne
+    if(readTranslationEl) readTranslationEl.style.fontSize = ''; // Effacer le style en ligne
+    applyReadStyles(); // Ré-appliquer les styles normaux
 
-    // Restart main animation if applicable
     if (readDisplayMode === 'type') {
       startTypeAnimation();
     } else {
-      // Ensure everything is visible in instant mode
       readChars.forEach(char => char.style.visibility = 'visible');
-      // Ensure translation is visible (might have been spans before)
       const translationEl = document.querySelector('#readTranslation, .flip-back#readTranslation');
        if (translationEl) {
            Array.from(translationEl.querySelectorAll('span')).forEach(span => span.style.visibility = 'visible');
@@ -6841,7 +7927,6 @@ function toggleSuperZen() {
   
   updateFocusButtonState();
 
-  // Update flip button visibility
   const flipBtn = document.getElementById('readFlipBtn');
   const container = document.getElementById('readTextContainer');
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
@@ -6916,13 +8001,7 @@ function superZenTogglePlay() {
 function adjustFontSize(delta) {
   readFontSize = Math.max(16, Math.min(72, readFontSize + delta));
   document.getElementById('readFontSize').textContent = readFontSize + 'px';
-
-  // Sélectionne les bons éléments même en mode flip ou super zen
-  const readText = document.querySelector('#readText');
-  const readTranslation = document.querySelector('#readTranslation');
-
-  if (readText) readText.style.fontSize = readFontSize + 'px';
-  if (readTranslation) readTranslation.style.fontSize = (readFontSize * 0.8) + 'px';
+  applyReadStyles(); // Appeler la nouvelle fonction
 }
 
 function toggleFlip() {
@@ -7054,7 +8133,19 @@ function showSentencesPreviewModal(zhSentences, trSentences) {
 // =====================================================
 document.addEventListener('DOMContentLoaded', () => {
   console.log('=== APP FUSIONNÉE CHARGÉE (v2 - Read Fixes) ===');
+  // Installe les écouteurs de resize/orientation/visualViewport pour le calcul de max-height
+if (typeof bindResizeForAvailableWords === 'function') {
+  bindResizeForAvailableWords();
+}
 
+// Premier calcul global (utile si on démarre directement en jeu sur mobile)
+if (typeof resizeAvailableWords === 'function') {
+  requestAnimationFrame(resizeAvailableWords);
+}
+const launchTextEl = document.getElementById('launchText');
+      if (launchTextEl) {
+        launchTextEl.textContent = 'Lancer la lecture';
+      }
   // --- Éléments ---
   const modeGameBtn = document.getElementById('modeGameBtn');
   const modeReadBtn = document.getElementById('modeReadBtn');
@@ -7102,6 +8193,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeSentencesPreviewModalBtn = document.getElementById('closeSentencesPreviewModal');
   const dictModalEl = document.getElementById('dictModal');
   const sentencesPreviewModalEl = document.getElementById('sentencesPreviewModal');
+  
+  // --- NOUVEAU : GESTIONNAIRE D'ONGLETS POUR LE DICTIONNAIRE ---
+  const globalTabsContainer = document.getElementById('dictTabsContainer');
+  if (globalTabsContainer) {
+    globalTabsContainer.addEventListener('click', (e) => {
+      const clickedTab = e.target.closest('.dict-tab-btn');
+      if (!clickedTab) return; // Clic en dehors d'un bouton
+
+      const tabId = clickedTab.dataset.tabId;
+      if (!tabId) return;
+      
+      const modalContent = clickedTab.closest('.dict-modal-content');
+      if (!modalContent) return;
+
+      // 1. Désactiver tous les onglets et panneaux
+      modalContent.querySelectorAll('.dict-tab-btn').forEach(btn => btn.classList.remove('active'));
+      modalContent.querySelectorAll('.dict-pane').forEach(pane => pane.classList.remove('active'));
+
+      // 2. Activer le bon
+      clickedTab.classList.add('active');
+      const targetPane = modalContent.querySelector(`#${tabId}`);
+      if (targetPane) {
+        targetPane.classList.add('active');
+      }
+    });
+  }
 
   // --- Attachement des listeners ---
   if(modeGameBtn) modeGameBtn.addEventListener('click', () => switchMode('game'));
@@ -7168,20 +8285,54 @@ document.addEventListener('DOMContentLoaded', () => {
     readCPM = parseInt(e.target.value, 10); // Mettre à jour la variable globale
     if(valueEl) valueEl.textContent = readCPM + ' car/min';
   });
+  
+  const readInterligneSlider = document.getElementById('readInterligne_slider'); // <-- ID CORRIGÉ
+  const readInterligneValue = document.getElementById('readInterligneValue');
+  const readLineHeightSpan = document.getElementById('readLineHeight'); // Span de la toolbar
+
+  if (readInterligneSlider && readInterligneValue) {
+      readInterligneSlider.addEventListener('input', (e) => {
+          const percent = e.target.value;
+          readInterligne = parseFloat(percent) / 100;
+          readInterligneValue.textContent = percent + '%'; // Met à jour le span du slider
+          if (readLineHeightSpan) readLineHeightSpan.textContent = percent + '%'; // Met à jour le span de la toolbar
+          applyReadStyles();
+      });
+  }
+
+  const readSpacingSlider = document.getElementById('readSpacing_slider'); // <-- ID CORRIGÉ
+  const readSpacingValue = document.getElementById('readSpacingValue');
+  const readSpacingSpan = document.getElementById('readSpacing'); // Span de la toolbar
+
+  if (readSpacingSlider && readSpacingValue) {
+      readSpacingSlider.addEventListener('input', (e) => {
+          const px = e.target.value;
+          readSpacing = parseInt(px, 10);
+          readSpacingValue.textContent = px + ' px'; // Met à jour le span du slider
+          if (readSpacingSpan) readSpacingSpan.textContent = px + ' px'; // Met à jour le span de la toolbar
+          applyReadStyles();
+      });
+  }
 
   if(inputZh) inputZh.addEventListener('input', updateSentencesPreview);
   if(inputTr) inputTr.addEventListener('input', updateSentencesPreview);
 
-  if(dictFileInput) dictFileInput.addEventListener('change', (e) => {
+if(dictFileInput) dictFileInput.addEventListener('change', (e) => {
     const file = e.target.files?.[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => { dict = parseCedict(reader.result); document.getElementById('dictStatus').textContent = `✅ (${dict.wordSet.size} mots)`; };
+    reader.onload = () => { 
+      dict = parseCedict(reader.result); 
+      document.getElementById('dictStatus').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--correct)" stroke-width="2" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> (${dict.wordSet.size} mots)`; 
+    };
     reader.readAsText(file, 'utf-8');
   });
   if(hskFileInput) hskFileInput.addEventListener('change', (e) => {
     const file = e.target.files?.[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => { levelMap = csvToLevelMap(reader.result); document.getElementById('hskStatus').textContent = `✅ (${levelMap.size} mots)`; };
+    reader.onload = () => { 
+      levelMap = csvToLevelMap(reader.result); 
+      document.getElementById('hskStatus').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--correct)" stroke-width="2" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> (${levelMap.size} mots)`; 
+    };
     reader.readAsText(file, 'utf-8');
   });
 
@@ -7286,7 +8437,6 @@ if (freeInputDisplaySelector && freeInputDisplayModeInput) {
         button.classList.add('active');
     });
 }
-// FIN DE
 
   // READ BUTTONS
   if(readCloseBtn) readCloseBtn.addEventListener('click', closeReadMode);
@@ -7294,9 +8444,22 @@ if (freeInputDisplaySelector && freeInputDisplayModeInput) {
   if(readModeToggleBtn) readModeToggleBtn.addEventListener('click', toggleReadMode);
   if(readZenToggleBtn) readZenToggleBtn.addEventListener('click', toggleSuperZen);
   if(readFocusToggleBtn) readFocusToggleBtn.addEventListener('click', toggleFocusMode);
-  if(readFontUpBtn) readFontUpBtn.addEventListener('click', () => adjustFontSize(4));
+ 
+  const readInterligneDownBtn = document.getElementById('readInterligneDown');
+  const readInterligneUpBtn = document.getElementById('readInterligneUp');
+  const readSpacingDownBtn = document.getElementById('readSpacingDown');
+  const readSpacingUpBtn = document.getElementById('readSpacingUp');
+ if(readFontUpBtn) readFontUpBtn.addEventListener('click', () => adjustFontSize(4));
   if(readFontDownBtn) readFontDownBtn.addEventListener('click', () => adjustFontSize(-4));
+  // Attacher les listeners aux nouveaux boutons
+  if(readInterligneDownBtn) readInterligneDownBtn.addEventListener('click', () => adjustInterligne(-5));
+  if(readInterligneUpBtn) readInterligneUpBtn.addEventListener('click', () => adjustInterligne(5));
+  if(readSpacingDownBtn) readSpacingDownBtn.addEventListener('click', () => adjustSpacing(-1));
+  if(readSpacingUpBtn) readSpacingUpBtn.addEventListener('click', () => adjustSpacing(1));
+
+  // Le listener pour le flip button (qui était juste après votre bloc)
   if(readFlipBtn) readFlipBtn.addEventListener('click', toggleFlip);
+  
 
   // --- GESTION CACHER/AFFICHER CONTROLES MOBILE ---
   const readPage = document.getElementById('readPage');
@@ -7344,8 +8507,8 @@ if (freeInputDisplaySelector && freeInputDisplayModeInput) {
       }
     });
   }
-
-
+  
+ 
   // READ PROGRESS BAR
   if(readProgress) readProgress.onclick = (e) => {
     // Ne fonctionne que si l'animation est active ou en pause
@@ -7422,27 +8585,124 @@ const pinyinTypeSelector = document.querySelector('.pinyin-input-type-selector')
     document.body.appendChild(modal);
   }
 
-  // 2. On attache UN SEUL écouteur de clic sur la zone de lecture
-  const readTextRoot = document.getElementById('readText');
-  if (readTextRoot && !readTextRoot.dataset.dictBound) {
-    readTextRoot.addEventListener('click', (e) => {
-      const span = e.target.closest('.read-char');
-      if (!span) return;
+  // === DÉBUT DE LA MODIFICATION (V2) ===
+  
+  // 2. On attache UN SEUL écouteur de clic sur la PAGE de lecture (parent stable)
+  const readPageRoot = document.getElementById('readPage'); // <-- PARENT STABLE
+  if (readPageRoot && !readPageRoot.dataset.dictBound) {
+    
+    readPageRoot.addEventListener('click', (e) => {
+      
+      // 0. Vérifier que le clic provient bien de la zone de texte chinois
+      const readTextElement = e.target.closest('#readText, .flip-front.read-text');
+      if (!readTextElement) return; // Clic en dehors (ex: sur la traduction, un bouton...)
 
-      const w = span.dataset.word || span.textContent;
+      // 1. Trouver le wrapper du mot cliqué
+      const wordSpanWrapper = e.target.closest('.read-word'); 
+      if (!wordSpanWrapper) return; // Clic sur ponctuation ou espace
+
+      // 2. Ouvrir le modal
+      const w = wordSpanWrapper.dataset.wordWrapper; 
       if (w) {
-        openDictModal(w);
-      }
-    });
+          console.log(`Clic (délégué) détecté sur le mot '${w}'`);
+          openDictModal(w); 
+      } 
+      
+      // --- NOUVELLE LOGIQUE DE HIGHLIGHT ---
+      
+      // 3. Trouver tous les caractères de ce mot
+      const charsInWord = wordSpanWrapper.querySelectorAll('.read-char');
+      
+      // 4. Appliquer la classe de tap
+      charsInWord.forEach(char => {
+          char.classList.add('char-tapped');
+      });
+
+      // 5. Retirer la classe après un délai
+      setTimeout(() => {
+          charsInWord.forEach(char => {
+              char.classList.remove('char-tapped');
+          });
+      }, 400);// Doit correspondre ou être > à la transition CSS
+      // --- FIN NOUVELLE LOGIQUE ---
+
+bindResizeForAvailableWords();
+
+    }); // Fin addEventListener
+    // === FIN DE LA MODIFICATION ===
 
     // petit flag pour ne pas binder deux fois si tu relances renderReadText()
-    readTextRoot.dataset.dictBound = '1';
+    readPageRoot.dataset.dictBound = '1';
   }
 
   // --- Initialisation finale ---
   updateSentencesPreview();
   switchMode('read');
   updateGameOptionsUI();
+  
+  // =====================================================
+  // CHARGEMENT AUTOMATIQUE DES FICHIERS (AUTO-LOAD)
+  // =====================================================
+  
+  async function autoLoadFiles() {
+    // Noms de vos fichiers sur GitHub (respectez les majuscules/minuscules)
+    const DICT_FILENAME = 'cedict_ts.u8'; 
+    const HSK_FILENAME = 'niveaux.csv'; 
+
+    // 1. Chargement du Dictionnaire
+    try {
+      const dictStatusEl = document.getElementById('dictStatus');
+      if(dictStatusEl) dictStatusEl.textContent = "Chargement auto en cours...";
+
+      const response = await fetch(DICT_FILENAME);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const text = await response.text();
+      dict = parseCedict(text); // Utilise votre fonction existante
+      
+      if(dictStatusEl) {
+        dictStatusEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--correct)" stroke-width="2" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Auto-chargé (${dict.wordSet.size} mots)`;
+        dictStatusEl.style.color = "var(--correct)";
+        dictStatusEl.style.borderColor = "var(--correct)";
+      }
+      console.log("Dictionnaire chargé automatiquement.");
+    } catch (e) {
+      console.warn("Impossible de charger le dictionnaire automatiquement (Fichier non trouvé ?)", e);
+      const dictStatusEl = document.getElementById('dictStatus');
+      if(dictStatusEl) dictStatusEl.textContent = "Fichier auto non trouvé (Utilisez l'import manuel)";
+    }
+
+    // 2. Chargement de la liste HSK/Freq
+    try {
+      const hskStatusEl = document.getElementById('hskStatus');
+      if(hskStatusEl) hskStatusEl.textContent = "Chargement auto en cours...";
+
+      const response = await fetch(HSK_FILENAME);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const text = await response.text();
+      levelMap = csvToLevelMap(text); // Utilise votre fonction existante
+      
+      if(hskStatusEl) {
+        hskStatusEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--correct)" stroke-width="2" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Auto-chargé (${levelMap.size} mots)`;
+        hskStatusEl.style.color = "var(--correct)";
+        hskStatusEl.style.borderColor = "var(--correct)";
+      }
+      
+      // Mise à jour immédiate de la difficulté si on est déjà en mode lecture
+      if(typeof updateReadDifficulty === 'function') updateReadDifficulty();
+
+      console.log("Liste HSK chargée automatiquement.");
+    } catch (e) {
+      console.warn("Impossible de charger la liste HSK automatiquement.", e);
+      const hskStatusEl = document.getElementById('hskStatus');
+      if(hskStatusEl) hskStatusEl.textContent = "Fichier auto non trouvé (Utilisez l'import manuel)";
+    }
+  }
+
+  // Lancer le chargement automatique
+  autoLoadFiles();
+  
   console.log('=== INITIALISATION TERMINÉE (Read Fixes Applied) ===');
 });
 
