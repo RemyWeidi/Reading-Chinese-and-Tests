@@ -3331,7 +3331,7 @@ min-height: 100px;
         </div>
         <div class="input-group">
           <label>Traduction française (optionnelle)</label>
-          <textarea id="inputTr" placeholder="Collez la traduction ici...">La nuit de la ville a always une forme de silence difficile à décrire.
+          <textarea id="inputTr" placeholder="Collez la traduction ici...">La nuit de la ville a toujours une forme de silence difficile à décrire.
 Les lampadaires brillent, mais n’éclairent pas le cœur de chacun.
 Liu Zhe est assis dans son bureau, fixant le rapport inachevé sur l’écran de son ordinateur.
 Les néons dehors clignotent, comme s’ils lui rappelaient en silence : encore une soirée de travail tardive.
@@ -4447,6 +4447,20 @@ function splitSentences(text) {
     return result.filter(s => s.trim().length > 0);
 }
 
+function processFrenchText(text) {
+    if (!text) return [];
+    
+    // CORRECTION BUG APOSTROPHE :
+    // Supprime les espaces après une apostrophe droite (') ou typographique (’)
+    // Ex: "l' espace" devient "l'espace"
+    const cleaned = text.replace(/(['’])\s+/g, '$1');
+
+    // Découpage standard des phrases
+    return cleaned.split(/\s*\/\/\s*/).flatMap(part => {
+        return part.split(/(?<=[.!?])\s+/g);
+    }).filter(Boolean).map(s => s.trim());
+}
+
 function parseCedict(raw) {
     const entries = new Map(); // La clé est 'simp', la valeur est un Array d'objets
     const wordSet = new Set();
@@ -4873,9 +4887,7 @@ function updateSentencesPreview() {
 
   let trSentences = [];
   if (trText) {
-    trSentences = trText.split(/\s*\/\/\s*/).flatMap(part => {
-      return part.split(/(?<=[.!?])\s+/g);
-    }).filter(Boolean).map(s => s.trim());
+    trSentences = processFrenchText(trText); 
   }
 
   preview.textContent = `${zhSentences.length} phrase(s) détectée(s)` +
@@ -4949,9 +4961,7 @@ function startGame() {
 
   const trText = document.getElementById('inputTr').value.trim();
   if (trText) {
-    translations = trText.split(/\s*\/\/\s*/).flatMap(part => {
-      return part.split(/(?<=[.!?])\s+/g);
-    }).filter(Boolean).map(s => s.trim());
+    translations = processFrenchText(trText); // Utilise la nouvelle fonction
   } else {
     translations = [];
   }
@@ -6804,9 +6814,7 @@ function startReadMode() {
   // Traitement de la traduction
   const trText = document.getElementById('inputTr').value.trim();
   if (trText) {
-    readTranslations = trText.split(/\s*\/\/\s*/).flatMap(part => {
-      return part.split(/(?<=[.!?])\s+/g);
-    }).filter(Boolean).map(s => s.trim());
+    readTranslations = processFrenchText(trText); // Utilise la nouvelle fonction
   } else {
     readTranslations = [];
   }
